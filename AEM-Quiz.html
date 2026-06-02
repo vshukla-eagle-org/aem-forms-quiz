@@ -35,11 +35,12 @@
             padding-bottom: 10px;
             margin-top: 0;
         }
+        /* State management visibility mechanics */
         .gate-screen, .quiz-screen, .result-screen {
-            display: none;
+            display: none !important;
         }
-        .active {
-            display: block;
+        .active-view {
+            display: block !important;
         }
         .form-group {
             margin-bottom: 20px;
@@ -49,13 +50,24 @@
             font-weight: bold;
             margin-bottom: 5px;
         }
-        input[type="email"], input[type="text"] {
+        input[type="email"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border);
+            padding: 12px;
+            border: 2px solid var(--border);
             border-radius: 4px;
             font-size: 16px;
             box-sizing: border-box;
+            outline: none;
+        }
+        input[type="email"]:focus {
+            border-color: var(--primary);
+        }
+        .error-msg {
+            color: var(--error);
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 5px;
+            display: none;
         }
         .btn {
             background-color: var(--primary);
@@ -91,7 +103,7 @@
         }
         .option-label {
             display: block;
-            padding: 8px 12px;
+            padding: 10px 12px;
             margin-bottom: 8px;
             background: #ffffff;
             border: 1px solid var(--border);
@@ -104,6 +116,7 @@
         }
         .option-label input {
             margin-right: 10px;
+            transform: scale(1.1);
         }
         .status-banner {
             padding: 15px;
@@ -136,14 +149,17 @@
 
 <div class="container">
     <!-- GATE SCREEN -->
-    <div id="gateScreen" class="gate-screen active">
+    <div id="gateScreen" class="gate-screen active-view">
         <h1>AEM Forms Knowledge Verification Test</h1>
-        <p>Welcome! Please register with your email address to unlock the assessment content. This quiz contains 25 scenarios checking knowledge of Adaptive Forms, Form Data Models, and Workflows. Passing score is <strong>80%</strong>.</p>
+        <p>Welcome! Please input your email address below to unlock the assessment content. This quiz contains 25 scenarios checking knowledge of Adaptive Forms, Form Data Models, and Workflows. Passing score is <strong>80% (20/25)</strong>.</p>
+        
         <div class="form-group">
-            <label for="userEmail">Your Registered Email Address:</label>
-            <input type="email" id="userEmail" placeholder="name@example.com" required>
+            <label for="userEmail">Enter Your Email Address to Unlock Quiz:</label>
+            <input type="email" id="userEmail" placeholder="e.g., yourname@domain.com" autocomplete="email">
+            <div id="emailValidationError" class="error-msg">⚠️ Please enter a complete, valid email address (containing '@' and a domain) to proceed.</div>
         </div>
-        <button class="btn" onclick="startQuiz()">Unlock Assessment</button>
+        
+        <button type="button" class="btn" onclick="startQuiz()">Unlock Assessment</button>
     </div>
 
     <!-- QUIZ SCREEN -->
@@ -153,7 +169,7 @@
             <div id="displayAttempt">Attempt: #1</div>
         </div>
         <h1>Assessment Content</h1>
-        <form id="quizForm">
+        <form id="quizForm" onsubmit="event.preventDefault();">
             <div id="questionsContainer"></div>
             <button type="button" class="btn" onclick="submitQuiz()">Submit Test</button>
         </form>
@@ -172,7 +188,7 @@
 </div>
 
 <script>
-    // Config webhook URL here to listen to email notifications (See Step 2 Setup Guide)
+    // OPTIONAL: Paste your Google Apps Script URL here to enable automatic background emails.
     const WEBHOOK_URL = ""; 
 
     let attemptCount = 0;
@@ -180,61 +196,14 @@
     const passingThreshold = 80;
     const totalQuestions = 25;
 
+    // Core Assessment Questions Data (Sourced from Adobe Documentation link)
     const quizQuestions = [
-        {
-            id: 1,
-            q: "An engineering team needs to deliver dynamic, web-responsive digital enrollment solutions that adjust layout seamlessly across mobile screens. Which asset format from AEM Forms must they select?",
-            options: ["Interactive Communications Print Channels", "Adaptive Forms", "Static XDP layouts via Forms Designer", "HTML5 Forms Workspace task logs"],
-            correct: 1
-        },
-        {
-            id: 2,
-            q: "You are designing a unified communication statement system that combines marketing collateral, operational statements, and secure offline transactional bills. Which design asset is engineered specifically for this scenario?",
-            options: ["Form Data Model", "Sling Servlets", "Interactive Communications", "OSGi Configurations"],
-            correct: 2
-        },
-        {
-            id: 3,
-            q: "A developer needs to configure an Adaptive Form to push submitted form payloads straight into a corporate backend system without relying on explicit infrastructure code. What element bridges this gap?",
-            options: ["AEM Communities Component", "Form Data Model (FDM) Service invocation", "Sling Post Servlet Mapping", "CRXDE Lite Access Control"],
-            correct: 1
-        },
-        {
-            id: 4,
-            q: "When an end-user hits submit on an Adaptive Form, the company wants an asynchronous Review and Approval procedure kicked off inside AEM. Which mechanism should natively trigger this execution?",
-            options: ["AEM Workflow Custom Submit Action", "Apache Sling Clientlib tracking code", "OSGi Service activator parameters", "Felix Web Console bundle tracking"],
-            correct: 0
-        },
-        {
-            id: 5,
-            q: "An author wants to show or hide a distinct field panel when a user checks 'Self-Employed' in a tax application form. What tool inside the form authoring workbench provides this zero-code functionality?",
-            options: ["Theme Mirror Editor", "The Rule Editor", "Branding View Manager", "CRX Repository Access Console"],
-            correct: 1
-        },
-        {
-            id: 6,
-            q: "A developer builds an Adaptive Form that must pull a user profile from a relational database and pre-populate fields instantly when loaded. Which strategy fulfills this prerequisite?",
-            options: ["Form Data Model Pre-fill Service", "Sling Attribute injection rules", "Client-side jQuery AJAX scripts", "AEM Author instance replication queues"],
-            correct: 0
-        },
-        {
-            id: 7,
-            q: "Your enterprise wants to optimize performance by enabling content authors to utilize the same standardized styling, global themes, and CSS objects shared seamlessly between AEM Sites and AEM Forms. What feature achieves this?",
-            options: ["Adaptive Forms Core Components", "XFA Template Importers", "Static Paragraph System components", "Granite UI Client libraries"],
-            correct: 0
-        },
-        {
-            id: 8,
-            q: "When publishing an Adaptive Form from a development/staging workbench to end-users, what fundamental underlying environment transition takes place?",
-            options: ["The assets copy synchronously from the Author instance to the Publish instance", "The code gets packed into a bundle inside CRXDE Lite", "Form templates translate into static HTML5 forms workspaces", "The configuration forces an automated Apache Tomcat database reboot"],
-            correct: 0
-        },
-        {
-            id: 9,
-            q: "An administration team needs to view real-time operations dashboards to track form submission metrics, backlogs, user completion speeds, and ongoing workflow key performance indicators (KPIs). What interface should they look at?",
-            options: ["AEM Web Console Bundle Status", "AEM Forms HTML Workspace Console", "Felix System Configuration View", "Sling Script Resolver Mapping Logs"],
-            correct: 1
-        },
-        {
-            id: 10,
-            q: "A developer is configuring a third-party platform integration and requires data to be submitted using web standard REST architecture end-points. What selection must they configure inside the Adaptive Form submit configuration?",
+        { id: 1, q: "An engineering team needs to deliver dynamic, web-responsive digital enrollment solutions that adjust layout seamlessly across mobile screens. Which asset format from AEM Forms must they select?", options: ["Interactive Communications Print Channels", "Adaptive Forms", "Static XDP layouts via Forms Designer", "HTML5 Forms Workspace task logs"], correct: 1 },
+        { id: 2, q: "You are designing a unified communication statement system that combines marketing collateral, operational statements, and secure offline transactional bills. Which design asset is engineered specifically for this scenario?", options: ["Form Data Model", "Sling Servlets", "Interactive Communications", "OSGi Configurations"], correct: 2 },
+        { id: 3, q: "A developer needs to configure an Adaptive Form to push submitted form payloads straight into a corporate backend system without relying on explicit infrastructure code. What element bridges this gap?", options: ["AEM Communities Component", "Form Data Model (FDM) Service invocation", "Sling Post Servlet Mapping", "CRXDE Lite Access Control"], correct: 1 },
+        { id: 4, q: "When an end-user hits submit on an Adaptive Form, the company wants an asynchronous Review and Approval procedure kicked off inside AEM. Which mechanism should natively trigger this execution?", options: ["AEM Workflow Custom Submit Action", "Apache Sling Clientlib tracking code", "OSGi Service activator parameters", "Felix Web Console bundle tracking"], correct: 0 },
+        { id: 5, q: "An author wants to show or hide a distinct field panel when a user checks 'Self-Employed' in a tax application form. What tool inside the form authoring workbench provides this zero-code functionality?", options: ["Theme Mirror Editor", "The Rule Editor", "Branding View Manager", "CRX Repository Access Console"], correct: 1 },
+        { id: 6, q: "A developer builds an Adaptive Form that must pull a user profile from a relational database and pre-populate fields instantly when loaded. Which strategy fulfills this prerequisite?", options: ["Form Data Model Pre-fill Service", "Sling Attribute injection rules", "Client-side jQuery AJAX scripts", "AEM Author instance replication queues"], correct: 0 },
+        { id: 7, q: "Your enterprise wants to optimize performance by enabling content authors to utilize the same standardized styling, global themes, and CSS objects shared seamlessly between AEM Sites and AEM Forms. What feature achieves this?", options: ["Adaptive Forms Core Components", "XFA Template Importers", "Static Paragraph System components", "Granite UI Client libraries"], correct: 0 },
+        { id: 8, q: "When publishing an Adaptive Form from a development/staging workbench to end-users, what fundamental underlying environment transition takes place?", options: ["The assets copy synchronously from the Author instance to the Publish instance", "The code gets packed into a bundle inside CRXDE Lite", "Form templates translate into static HTML5 forms workspaces", "The configuration forces an automated Apache Tomcat database reboot"], correct: 0 },
+        { id: 9, q: "An administration team needs to view real-time operations dashboards to track form submission metrics, backlogs, user completion speeds, and ongoing workflow key performance indicators (KPIs). What interface should they look at?", options: ["AEM Web Console Bundle Status", "AEM Forms HTML Workspace Console", "Felix System Configuration View", "Sling Script Resolver Mapping Logs"], correct: 1 },

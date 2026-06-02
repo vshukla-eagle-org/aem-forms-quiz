@@ -22,33 +22,27 @@
         .description { font-size: 14px; color: #666; margin-bottom: 25px; text-align: center; line-height: 1.5; }
         .hidden { display: none !important; }
         
-        /* Form Styling */
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
-        input[type="text"], input[type="email"] { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 14px; transition: border 0.3s; }
-        input:focus { border-color: var(--adobe-red); outline: none; }
-        .error-msg { color: var(--error); font-size: 12px; margin-top: 5px; display: none; }
-        
-        /* Quiz Layout */
+        /* Quiz Layout Framework */
         .q-card { background: #FFF; border: 1px solid var(--border-color); padding: 20px; border-radius: 6px; margin-bottom: 20px; }
-        .q-text { font-weight: 600; font-size: 16px; margin-bottom: 15px; }
+        .q-text { font-weight: 600; font-size: 16px; margin-bottom: 15px; line-height: 1.4; }
         .options-list { list-style: none; }
-        .option-item { display: flex; align-items: flex-start; margin-bottom: 10px; padding: 10px; border: 1px solid #EFEFEF; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+        .option-item { display: flex; align-items: flex-start; margin-bottom: 10px; padding: 12px; border: 1px solid #EFEFEF; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
         .option-item:hover { background: #F0F7FF; }
-        .option-item input { margin-right: 12px; margin-top: 3px; transform: scale(1.1); }
+        .option-item input { margin-right: 12px; margin-top: 3px; transform: scale(1.1); cursor: pointer; }
+        .option-item label { display: flex; width: 100%; cursor: pointer; font-weight: normal; align-items: center; }
         
-        /* Buttons */
-        .btn { background-color: var(--adobe-red); color: white; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; transition: background 0.2s; text-transform: uppercase; letter-spacing: 1px; }
+        /* Action Triggers */
+        .btn { background-color: var(--adobe-red); color: white; border: none; padding: 14px 28px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; transition: background 0.2s; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
         .btn:hover { background-color: #D00B00; }
         .btn-reattempt { background-color: #0066CC; }
         .btn-reattempt:hover { background-color: #004C99; }
         
-        /* Results view */
+        /* Scoring Summary Boards */
         .results-panel { text-align: center; padding: 20px 0; }
         .score-big { font-size: 48px; font-weight: bold; margin: 20px 0; text-align: center; }
         .pass { color: var(--success); }
         .fail { color: var(--error); }
-        .stats-box { background: #F0F4F8; padding: 15px; border-radius: 6px; margin-bottom: 25px; font-size: 15px; line-height: 1.6; }
+        .stats-box { background: #F0F4F8; padding: 15px; border-radius: 6px; margin-bottom: 25px; font-size: 15px; line-height: 1.6; text-align: left; }
     </style>
 </head>
 <body>
@@ -57,28 +51,15 @@
     <h1>AEM Forms Technical Mastery Evaluation</h1>
     <p class="description">Based on Adobe Experience Manager 6.4/6.5 Forms Framework tutorials. Requires an 80% score (20/25 correct answers) to pass.</p>
 
-    <!-- STEP 1: Registration Window -->
-    <div id="auth-section">
-        <div class="form-group">
-            <label for="username">Full Name</label>
-            <input type="text" id="username" placeholder="Enter your full name">
-            <div class="error-msg" id="err-name">Name must be at least 2 characters long.</div>
+    <!-- LIVE QUIZ RUNTIME INTERFACE CONTAINER -->
+    <div id="quiz-section">
+        <div id="questions-container">
+            <p style="text-align:center; padding:20px; color:#666;">Compiling and compiling diagnostic databank modules...</p>
         </div>
-        <div class="form-group">
-            <label for="useremail">Email Address</label>
-            <input type="email" id="useremail" placeholder="name@company.com">
-            <div class="error-msg" id="err-email">Please enter a valid email address.</div>
-        </div>
-        <button type="button" class="btn" onclick="validateAndStart()">Validate & Start Quiz</button>
-    </div>
-
-    <!-- STEP 2: Main Quiz Interface -->
-    <div id="quiz-section" class="hidden">
-        <div id="questions-container"></div>
         <button type="button" id="action-btn" class="btn" onclick="evaluateQuiz()">Submit Examination</button>
     </div>
 
-    <!-- STEP 3: Outcome Display -->
+    <!-- EVALUATION COMPLETION ASSESSMENT CONTAINER -->
     <div id="result-section" class="hidden results-panel">
         <h2 id="result-status" style="text-align: center;">Evaluation Complete</h2>
         <div id="score-display" class="score-big">0%</div>
@@ -88,26 +69,29 @@
 </div>
 
 <script>
-    // --- EMAILJS CONFIGURATION ---
-    // Optional: Populate these if you want live external email delivery to your GitHub profile email.
+    // --- SCENARIO KEYS CONFIGURATION CONFIG ---
     const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; 
     const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
     const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
 
-    // Initialize EmailJS safely
+    // Setup safe verification wrapper hooks
     (function() {
-        if(EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-            emailjs.init(EMAILJS_PUBLIC_KEY);
+        try {
+            if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+                emailjs.init(EMAILJS_PUBLIC_KEY);
+            }
+        } catch(e) {
+            console.warn("Notification engine initialization deferred:", e.message);
         }
     })();
 
-    // --- APPLICATION VARIABLES ---
-    let userData = { name: '', email: '' };
-    let attemptsCount = 0;
+    // --- APPLICATION RUNTIME TRACKERS ---
+    let attemptsCount = 1; // Starts at 1 since quiz loads instantly
     const passingThreshold = 80;
     const totalQuestionsRequested = 25;
+    let ActiveQuestionsList = [];
 
-    // --- COMPREHENSIVE AEM FORMS QUESTION DATABANK (25 Unique Items) ---
+    // --- COMPLETE UNIFIED QUESTION OBJECT DATABANK (25 ITEMS) ---
     const rawQuestionBank = [
         { q: "Which framework component creates responsive, personalized, dynamic digital form experiences?", o: ["Adaptive Forms", "Static PDF Forms", "HTML Workspaces", "Print Channel Profiles"], a: 0 },
         { q: "What tool maps dissimilar backend schemas together into a unified model for an Adaptive Form workflow?", o: ["Form Data Model (FDM)", "Sling Repository Merger", "Workflow Process Archive", "AEM Translation Manager"], a: 0 },
@@ -125,3 +109,6 @@
         { q: "Which service configuration handles administrative out-of-office message distributions and automatic notifications?", o: ["Day CQ Mail Service", "Apache Sling Logging Logger", "FDM Prefill Engine instance", "AEM Forms App Workspace configuration"], a: 0 },
         { q: "To expose enterprise cloud platforms like Microsoft SharePoint to AEM Forms, you configure a:", o: ["Cloud Service Configuration", "OSGi Environment System Property File", "Dispatcher Cache Rewriting Logic rule", "ClientLib folder package configuration"], a: 0 },
         { q: "What layer caches structural code fragments but requires explicit configurations to pass AEM Form parameters?", o: ["AEM Dispatcher Instance", "CRX OAK Repository Core", "Jetty Application Servlet Engine", "AEM Form Container Layout Context"], a: 0 },
+        { q: "What configuration properties can prefill and instantiate form field information seamlessly for users?", o: ["Form Data Model Prefill Service", "Metadata Tagging profiles Manager", "Custom ClientLib JavaScript functions", "Apache Sling Model context annotations"], a: 0 },
+        { q: "Which editor tool interface handles layout styling variables like color themes and typography globally?", o: ["Theme Editor Panel", "CRXDE Lite System Directory", "Workflow Models Creation Manager", "Form Data Model graphical workspace UI"], a: 0 },
+        { q: "What core user group membership allows administrative privileges to construct and manipulate Workflow Models?", o: ["workflow-editor", "forms-users", "everyone", "anonymous-access-group"], a: 0 },

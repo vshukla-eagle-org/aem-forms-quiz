@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AEM Forms Mastery Quiz & Certification</title>
-    <!-- Tailwind CSS for modern, premium styling -->
+    <!-- Tailwind CSS for high-fidelity styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Inter:wght@300;400;500;600;700&family=Pinyon+Script&display=swap');
@@ -14,7 +14,7 @@
             background-color: #f8fafc;
         }
 
-        /* Certificate Font families */
+        /* Certificate-specific typography styles */
         .serif-title {
             font-family: 'Cinzel', serif;
         }
@@ -22,7 +22,7 @@
             font-family: 'Pinyon Script', cursive;
         }
 
-        /* Smooth page transitions */
+        /* Fluid page transitions */
         .fade-in {
             animation: fadeIn 0.5s ease-out forwards;
         }
@@ -31,7 +31,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Confetti particle styling */
+        /* Confetti particle elements layout */
         .confetti {
             position: fixed;
             width: 10px;
@@ -49,7 +49,6 @@
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col justify-between">
 
-    <!-- Top Bar with Admin Config Toggle -->
     <header class="bg-white border-b border-slate-200 py-4 px-6 shadow-sm">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
@@ -70,7 +69,6 @@
         </div>
     </header>
 
-    <!-- Admin Configuration Panel (Collapsible Overlay) -->
     <div id="admin-panel" class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl z-50 border-l border-slate-200 transform translate-x-full transition-transform duration-300 ease-in-out">
         <div class="h-full flex flex-col justify-between p-6">
             <div>
@@ -80,11 +78,11 @@
                 </div>
 
                 <div class="bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-4 mb-6 text-sm">
-                    <p class="font-semibold mb-1">📬 How to get real emails to vakshak@gmail.com:</p>
+                    <p class="font-semibold mb-1">📬 How to receive actual emails to vakshak@gmail.com:</p>
                     <ol class="list-decimal pl-4 space-y-1">
-                        <li>Visit <a href="https://web3forms.com" target="_blank" class="underline font-bold text-blue-700">web3forms.com</a></li>
-                        <li>Enter your email <span class="font-mono bg-amber-100 px-1 rounded text-red-700">vakshak@gmail.com</span></li>
-                        <li>Check your inbox to get your **Access Key** instantly.</li>
+                        <li>Go to <a href="https://web3forms.com" target="_blank" class="underline font-bold text-blue-700">web3forms.com</a></li>
+                        <li>Submit your target email <span class="font-mono bg-amber-100 px-1 rounded text-red-700">vakshak@gmail.com</span></li>
+                        <li>Retrieve your free **Access Key** sent to your inbox.</li>
                         <li>Paste your key below and click save!</li>
                     </ol>
                 </div>
@@ -109,16 +107,15 @@
         </div>
     </div>
 
-    <!-- Main Content Container -->
     <main class="flex-grow max-w-4xl w-full mx-auto p-4 md:p-8">
-        <!-- Toast Notification Area -->
+        <!-- Toast System Hook -->
         <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3"></div>
 
-        <!-- Section 1: Dynamic Login & Form Verification -->
+        <!-- Section 1: Premium Registration & Verification View -->
         <div id="login-section" class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden fade-in">
             <div class="bg-gradient-to-r from-blue-700 to-indigo-800 p-8 text-white text-center">
                 <h2 class="text-3xl font-extrabold tracking-tight">AEM Forms Mastery Quiz</h2>
-                <p class="text-blue-100 mt-2 max-w-md mx-auto text-sm">Pass with an 80% score (20/25 questions correct) to earn your verified Adobe Experience Manager Forms Specialist certificate.</p>
+                <p class="text-blue-100 mt-2 max-w-md mx-auto text-sm">Pass with an 80% score (20/25 correct responses) to claim your verified Adobe Experience Manager Forms Specialist certificate.</p>
             </div>
             
             <div class="p-8 max-w-lg mx-auto">
@@ -129,8 +126,8 @@
                         <label class="block text-sm font-semibold text-slate-700 mb-2" for="userName">Your Full Name (For Certificate)</label>
                         <input type="text" id="userName" placeholder="John Doe" oninput="clearInputError(this)" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition font-medium">
                         <p id="nameError" class="text-rose-600 text-xs font-semibold mt-1.5 hidden flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-                            Please enter your full name (minimum 2 characters) for your certificate credentials.
+                            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                            Please enter your full name (minimum 2 characters) for certificate eligibility.
                         </p>
                     </div>
 
@@ -138,8 +135,8 @@
                         <label class="block text-sm font-semibold text-slate-700 mb-2" for="userEmail">Your Email Address</label>
                         <input type="email" id="userEmail" placeholder="yourname@domain.com" oninput="clearInputError(this)" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition font-medium">
                         <p id="emailError" class="text-rose-600 text-xs font-semibold mt-1.5 hidden flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-                            Please enter a valid, format-compliant email address.
+                            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                            Please enter a valid format-compliant email address.
                         </p>
                     </div>
 
@@ -151,9 +148,8 @@
             </div>
         </div>
 
-        <!-- Section 2: Quiz Examination Frame -->
         <div id="quiz-section" class="hidden fade-in space-y-6">
-            <!-- Dynamic Tracker Sticky Header -->
+            <!-- Dynamic Tracker Sticky Status -->
             <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm flex justify-between items-center sticky top-2 z-10">
                 <div class="flex items-center gap-4">
                     <div class="bg-blue-50 text-blue-700 font-bold px-3 py-1.5 rounded-lg text-sm border border-blue-100">
@@ -168,12 +164,12 @@
                 </div>
             </div>
 
-            <!-- Quiz Questions Main Injector -->
+            <!-- Quiz Questions Target Anchor -->
             <div id="questions-container" class="space-y-6">
-                <!-- Injected via JavaScript -->
+                <!-- Injected programmatically -->
             </div>
 
-            <!-- Quiz Footer Navigation & Submit -->
+            <!-- Interactive Navigation Controls -->
             <div id="quiz-footer" class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col items-center gap-4">
                 <div id="score-display" class="w-full text-center hidden"></div>
                 <button id="submit-btn" onclick="submitQuiz()" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all text-lg w-full max-w-md">
@@ -185,17 +181,14 @@
             </div>
         </div>
 
-        <!-- Section 3: Certificate Preview and Sharing View -->
         <div id="certificate-section" class="hidden fade-in space-y-6 mt-6">
             <div class="bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-2xl p-6 text-center max-w-2xl mx-auto">
                 <h3 class="text-2xl font-bold mb-2">🎓 Official Pass Confirmed!</h3>
                 <p class="text-emerald-700">Congratulations! You have successfully passed the AEM Forms Mastery Quiz. Your credentials and dynamic certificate are ready below.</p>
             </div>
 
-            <!-- Live Interactive Certificate Canvas Frame -->
             <div class="flex flex-col items-center gap-6">
                 <div class="border border-slate-300 rounded-xl overflow-hidden shadow-2xl max-w-full bg-white p-2">
-                    <!-- Actual rendering element for the script -->
                     <canvas id="certificateCanvas" width="1120" height="800" class="w-full max-w-3xl h-auto border border-slate-100 rounded-lg block"></canvas>
                 </div>
 
@@ -214,25 +207,23 @@
         </div>
     </main>
 
-    <!-- Footer Details -->
+    <!-- Footer Information -->
     <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800">
         <p>© 2026 Adobe Experience League Certified Mastery Engine.</p>
         <p class="mt-1 text-slate-500">This simulator is built in compliance with official learning paths to support form authoring and automation specialists.</p>
     </footer>
 
     <script>
-        /**
-         * GLOBAL CONFIG & STATE ENGINE
-         */
+        // Target settings states
         let targetEmailAddress = localStorage.getItem('targetEmailAddress') || "vakshak@gmail.com";
-        let web3formsAccessKey = localStorage.getItem('web3formsAccessKey') || ""; // Can be set via Admin config drawer
+        let web3formsAccessKey = localStorage.getItem('web3formsAccessKey') || ""; 
         
         let currentAttempts = 1;
         let participantName = "";
         let participantEmail = "";
         let activeQuizData = [];
 
-        // Question Repository containing all 25 core exam modules mapping to the Adobe Experience League Documentation
+        // Question Repository - Complete 25 detailed matching syllabus items
         const originalQuizData = [
             {
                 q: "What is the primary value proposition of Adobe Experience Manager (AEM) Forms?",
@@ -486,12 +477,11 @@
             }
         ];
 
-        // Ensure variables are properly loaded from localStorage on start
         document.getElementById('target-email').value = targetEmailAddress;
         document.getElementById('web3forms-key').value = web3formsAccessKey;
 
         /**
-         * ADMIN DRAWER LOGIC
+         * ADMIN DRAWER CONTROLLERS
          */
         function toggleAdminPanel() {
             const panel = document.getElementById('admin-panel');
@@ -518,14 +508,13 @@
         }
 
         /**
-         * WEB3FORMS EMAIL DISPATCH SYSTEM
+         * STREAMING_CHUNK:Implementing the Web3Forms API mail dispatcher core
          */
         async function dispatchEmail(scenarioName, subject, bodyMessage) {
             if (!web3formsAccessKey) {
-                // Warning Toast if Web3Forms Key is missing
                 showToast(
-                    "⚠️ Email Simulated (No API Key)", 
-                    `Enter Web3Forms Key in Settings to send directly to your inbox.`, 
+                    "⚠️ Simulated Email (No API Key)", 
+                    `Enter Web3Forms Key in Settings to receive real emails at your inbox.`, 
                     "warning"
                 );
                 
@@ -554,7 +543,7 @@
 
                 const data = await response.json();
                 if (data.success) {
-                    showToast("📧 Email Dispatched", `Notification sent successfully to ${targetEmailAddress}`, "success");
+                    showToast("📧 Email Sent", `Notification sent successfully to ${targetEmailAddress}`, "success");
                 } else {
                     showToast("Email Error", data.message || "Failed to send.", "error");
                 }
@@ -565,7 +554,7 @@
         }
 
         /**
-         * TOAST CONTROLLER SYSTEM
+         * STREAMING_CHUNK:Creating toast notification UI blocks
          */
         function showToast(title, msg, type = "info") {
             const container = document.getElementById('toast-container');
@@ -576,7 +565,7 @@
             if (type === "warning") colorClasses = "bg-slate-900 border-l-4 border-amber-500";
             if (type === "error") colorClasses = "bg-slate-900 border-l-4 border-rose-600";
 
-            toast.className = `toast text-white px-5 py-4 rounded-xl shadow-2xl max-w-sm ${colorClasses}`;
+            toast.className = `toast text-white px-5 py-4 rounded-xl shadow-2xl max-w-sm ${colorClasses} transition-opacity duration-300`;
             toast.innerHTML = `
                 <div class="font-bold text-sm flex items-center gap-2">
                     ${type === 'success' ? '✔' : type === 'warning' ? '⚠' : '✉'} ${title}
@@ -592,7 +581,7 @@
         }
 
         /**
-         * REGISTRATION VALIDATION & INITIALIZATION
+         * STREAMING_CHUNK:Handling input field real-time validation clears
          */
         function clearInputError(input) {
             input.classList.remove('border-rose-500', 'bg-rose-50');
@@ -621,7 +610,10 @@
                 hasErrors = true;
             }
 
-            if (hasErrors) return;
+            if (hasErrors) {
+                showToast("Validation Warning", "Please correct highlighted fields before continuing.", "warning");
+                return;
+            }
 
             participantName = nameVal;
             participantEmail = emailVal;
@@ -646,12 +638,12 @@
         }
 
         /**
-         * RENDERING & SHUFFLING ENGINE
+         * STREAMING_CHUNK:Compiling and dynamic-injecting the randomized quiz components
          */
         function initializeQuiz() {
             document.getElementById('attempt-counter').innerText = currentAttempts;
 
-            // Clone and Shuffle Repository
+            // Clone and Shuffle questions database
             activeQuizData = JSON.parse(JSON.stringify(originalQuizData));
             activeQuizData = shuffleArray(activeQuizData);
 
@@ -659,7 +651,6 @@
             container.innerHTML = '';
 
             activeQuizData.forEach((qData, index) => {
-                // Shuffle options programmatically
                 qData.options = shuffleArray(qData.options);
 
                 const card = document.createElement('div');
@@ -667,7 +658,7 @@
                 card.className = 'question-card bg-white rounded-xl border border-slate-200 p-6 shadow-sm transition-all duration-300';
                 
                 let optionsHTML = '';
-                qData.options.forEach((opt, optIndex) => {
+                qData.options.forEach((opt) => {
                     optionsHTML += `
                         <label class="option-label group flex items-center gap-4 p-3.5 rounded-lg border border-slate-100 hover:border-blue-200 hover:bg-blue-50/50 cursor-pointer transition">
                             <input type="radio" name="q${index}" value="${opt.replace(/"/g, '&quot;')}" onchange="clearCardWarning(${index})" class="w-4 h-4 text-blue-600 focus:ring-blue-500 border-slate-300">
@@ -694,25 +685,25 @@
         function clearCardWarning(index) {
             const card = document.getElementById(`q-card-${index}`);
             if (card) {
-                card.classList.remove('border-rose-300', 'bg-rose-50/20');
+                card.classList.remove('border-rose-300', 'bg-rose-50/20', 'ring-2', 'ring-rose-300');
                 card.querySelector('.validation-warning').classList.add('hidden');
             }
         }
 
         /**
-         * SUBMISSION & AUTO-SCROLL VALIDATION
+         * STREAMING_CHUNK:Executing dynamic evaluation and focus-scrolling validations
          */
         function submitQuiz() {
             let score = 0;
             let unattemptedIndices = [];
 
-            // Reset previous warning indicators
+            // Reset all previous warning states
             const cards = document.querySelectorAll('.question-card');
-            cards.forEach(card => card.classList.remove('border-rose-300', 'bg-rose-50/20'));
+            cards.forEach(card => card.classList.remove('border-rose-300', 'bg-rose-50/20', 'ring-2', 'ring-rose-300'));
             const warnings = document.querySelectorAll('.validation-warning');
             warnings.forEach(warn => warn.classList.add('hidden'));
 
-            // Assess submissions
+            // Process user inputs
             activeQuizData.forEach((qData, index) => {
                 const selected = document.querySelector(`input[name="q${index}"]:checked`);
                 if (selected) {
@@ -724,25 +715,25 @@
                 }
             });
 
-            // Handle validation errors if unanswered questions remain
+            // Focus and scroll if validation requirements are unmet
             if (unattemptedIndices.length > 0) {
                 unattemptedIndices.forEach(idx => {
                     const card = document.getElementById(`q-card-${idx}`);
                     if (card) {
-                        card.classList.add('border-rose-300', 'bg-rose-50/20');
+                        card.classList.add('border-rose-300', 'bg-rose-50/20', 'ring-2', 'ring-rose-300');
                         card.querySelector('.validation-warning').classList.remove('hidden');
                     }
                 });
 
-                // Auto-scroll to the first unattempted question smoothly
+                // Smoothly focus first unanswered module
                 const firstMissedCard = document.getElementById(`q-card-${unattemptedIndices[0]}`);
                 if (firstMissedCard) {
                     firstMissedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
 
                 showToast(
-                    "Examination Incomplete", 
-                    `You missed ${unattemptedIndices.length} question(s). Missing questions are highlighted in red.`, 
+                    "Incomplete Submission", 
+                    `You have left ${unattemptedIndices.length} question(s) unattempted. Missing cards are highlighted.`, 
                     "error"
                 );
                 return;
@@ -752,14 +743,14 @@
         }
 
         /**
-         * EVALUATING EXAM OUTCOME
+         * STREAMING_CHUNK:Processing calculations and triggering appropriate response templates
          */
         function processResults(score) {
             const scoreDisplay = document.getElementById('score-display');
             const submitBtn = document.getElementById('submit-btn');
             const reattemptBtn = document.getElementById('reattempt-btn');
 
-            // Freeze form fields
+            // Deactivate interactive inputs
             const allInputs = document.querySelectorAll('input[type="radio"]');
             allInputs.forEach(input => input.disabled = true);
 
@@ -768,7 +759,7 @@
             submitBtn.classList.add('hidden');
 
             if (score >= 20) {
-                // PASS (80% or greater)
+                // PASS (80% minimum)
                 scoreDisplay.className = "p-6 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl mb-4";
                 scoreDisplay.innerHTML = `
                     <h3 class="text-2xl font-black mb-1">🎉 Passed!</h3>
@@ -777,7 +768,7 @@
                 `;
                 reattemptBtn.classList.add('hidden');
 
-                // Trigger email notification for passing
+                // Dispatch passing statistics email
                 dispatchEmail(
                     "Scenario 2 (Pass)",
                     `🏆 Candidate Passed! - ${participantName}`,
@@ -788,7 +779,6 @@
                     `Date Completed: ${new Date().toLocaleString()}`
                 );
 
-                // Initialize Certificate System
                 triggerConfetti();
                 generateCertificationCanvas(score, pct);
 
@@ -802,7 +792,7 @@
                 `;
                 reattemptBtn.classList.remove('hidden');
 
-                // Trigger email notification for failing
+                // Dispatch fail statistics email
                 dispatchEmail(
                     "Scenario 2 (Failure)",
                     `⚠️ Candidate Unsuccessful - ${participantName}`,
@@ -828,49 +818,46 @@
         }
 
         /**
-         * CERTIFICATE GENERATOR (HTML5 Canvas Engine)
+         * STREAMING_CHUNK:Rendering high-resolution certificate on HTML5 canvas
          */
         function generateCertificationCanvas(score, pct) {
             const canvas = document.getElementById('certificateCanvas');
             const ctx = canvas.getContext('2d');
             const dateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-            // 1. Draw solid cream clean base
+            // Solid clean canvas base fill
             ctx.fillStyle = '#fdfdfd';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 2. Draw modern border bands
-            // External Navy Band
+            // Double border bands layout
             ctx.lineWidth = 14;
-            ctx.strokeStyle = '#0f172a'; // slate-900
+            ctx.strokeStyle = '#0f172a'; // Slate-900
             ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
 
-            // Internal Gold Detail Line
             ctx.lineWidth = 4;
-            ctx.strokeStyle = '#c5a880'; // Antique gold
+            ctx.strokeStyle = '#c5a880'; // Gold accent
             ctx.strokeRect(35, 35, canvas.width - 70, canvas.height - 70);
 
-            // Draw Corner geometric accents
+            // Frame corner accents
             ctx.fillStyle = '#c5a880';
             ctx.fillRect(35, 35, 30, 30);
             ctx.fillRect(canvas.width - 65, 35, 30, 30);
             ctx.fillRect(35, canvas.height - 65, 30, 30);
             ctx.fillRect(canvas.width - 65, canvas.height - 65, 30, 30);
 
-            // 3. Write Typography & Credentials
             ctx.textAlign = 'center';
 
-            // Category/Host
+            // Top metadata detail
             ctx.fillStyle = '#64748b';
             ctx.font = 'bold 16px "Inter", sans-serif';
             ctx.fillText('ADOBE EXPERIENCE LEAGUE STUDY PATH', canvas.width / 2, 120);
 
-            // Header Title
+            // Certificate header block
             ctx.fillStyle = '#0f172a';
             ctx.font = 'bold 44px "Cinzel", Georgia, serif';
             ctx.fillText('CERTIFICATE OF MASTERY', canvas.width / 2, 180);
 
-            // Small spacer detail
+            // Center horizontal dividers
             ctx.strokeStyle = '#c5a880';
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -878,39 +865,39 @@
             ctx.lineTo(canvas.width / 2 + 80, 210);
             ctx.stroke();
 
-            // Declaration line
+            // Declaration lines
             ctx.fillStyle = '#475569';
             ctx.font = 'italic 18px "Inter", sans-serif';
             ctx.fillText('This dynamic credential is proudly presented to', canvas.width / 2, 260);
 
-            // Recipient Name
+            // Recipient dynamic credentials
             ctx.fillStyle = '#0d519d';
             ctx.font = 'bold 42px "Cinzel", "Inter", sans-serif';
             ctx.fillText(participantName.toUpperCase(), canvas.width / 2, 330);
 
-            // Sub text description
+            // Sub-declaration descriptor blocks
             ctx.fillStyle = '#475569';
             ctx.font = '16px "Inter", sans-serif';
             ctx.fillText('for demonstrating comprehensive competence and subject matter expertise by successfully passing', canvas.width / 2, 400);
             ctx.fillText('the curated evaluation criteria of the Adobe Experience Manager Forms Specialist Course.', canvas.width / 2, 430);
 
-            // Certification specification title
+            // Target module text
             ctx.fillStyle = '#0f172a';
             ctx.font = 'bold 22px "Cinzel", "Inter", sans-serif';
             ctx.fillText('AEM FORMS CERTIFIED SPECIALIST', canvas.width / 2, 480);
 
-            // Score details
+            // Results details
             ctx.fillStyle = '#64748b';
             ctx.font = 'bold 15px "Inter", sans-serif';
             ctx.fillText(`Evaluation Score: ${score}/25 (${pct}%)  |  Required: 80%`, canvas.width / 2, 520);
             ctx.fillText(`Verification Authority Record Ref: #AEM-${Math.floor(100000 + Math.random() * 900000)}`, canvas.width / 2, 545);
 
-            // 4. DRAW ELEGANT GOLD ACCENT SEAL
+            // Antique ribbon & seal graphics
             const sealX = canvas.width / 2;
             const sealY = 640;
             
-            // Draw ribbons
-            ctx.fillStyle = '#b45309'; // Dark amber / red-gold ribbon
+            // Medallion ribbon tails
+            ctx.fillStyle = '#b45309'; 
             ctx.beginPath();
             ctx.moveTo(sealX - 25, sealY);
             ctx.lineTo(sealX - 45, sealY + 70);
@@ -927,15 +914,15 @@
             ctx.lineTo(sealX + 25, sealY);
             ctx.fill();
 
-            // Draw circular medallion base
+            // Medallion dynamic seal
             ctx.beginPath();
             ctx.arc(sealX, sealY, 40, 0, Math.PI * 2);
-            ctx.fillStyle = '#d97706'; // Gold/amber fill
+            ctx.fillStyle = '#d97706'; 
             ctx.fill();
             
             ctx.beginPath();
             ctx.arc(sealX, sealY, 35, 0, Math.PI * 2);
-            ctx.strokeStyle = '#fef3c7'; // Light gold border
+            ctx.strokeStyle = '#fef3c7'; 
             ctx.lineWidth = 2;
             ctx.stroke();
 
@@ -945,8 +932,7 @@
             ctx.fillText('PASS', sealX, sealY + 8);
             ctx.fillText('★ ★ ★', sealX, sealY + 20);
 
-            // 5. Draw Signature blocks
-            // Left Signature (Platform Date)
+            // Authorization blocks
             ctx.strokeStyle = '#94a3b8';
             ctx.lineWidth = 1;
             ctx.beginPath();
@@ -956,13 +942,12 @@
             
             ctx.fillStyle = '#0f172a';
             ctx.font = 'italic 16px "Georgia", serif';
-            ctx.fillText(dateStr, 250, 670); // Dynamic Date string
+            ctx.fillText(dateStr, 250, 670); 
             
             ctx.fillStyle = '#64748b';
             ctx.font = '13px "Inter", sans-serif';
             ctx.fillText('Date of Achievement', 250, 700);
 
-            // Right Signature (Issuer authority)
             ctx.beginPath();
             ctx.moveTo(canvas.width - 350, 680);
             ctx.lineTo(canvas.width - 150, 680);
@@ -970,47 +955,40 @@
             
             ctx.fillStyle = '#0f172a';
             ctx.font = 'italic 18px "Pinyon Script", cursive';
-            ctx.fillText('Exam Board Authority', canvas.width - 250, 665); // Dynamic digital sig
+            ctx.fillText('Exam Board Authority', canvas.width - 250, 665); 
             
             ctx.fillStyle = '#64748b';
             ctx.font = '13px "Inter", sans-serif';
             ctx.fillText('Authorized Signature', canvas.width - 250, 700);
 
-            // Activate Preview Area
             document.getElementById('certificate-section').classList.remove('hidden');
         }
 
         /**
-         * CERTIFICATE SHARING & DOWNLOADING
+         * STREAMING_CHUNK:Providing download wrappers and sharing helpers
          */
         function downloadCertificate() {
             const canvas = document.getElementById('certificateCanvas');
-            
-            // Build temporary download link anchor
             const link = document.createElement('a');
             link.download = `AEM_Forms_Mastery_Certificate_${participantName.replace(/\s+/g, '_')}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
 
-            showToast("Certificate Downloaded", "The high-quality credentials PNG has been saved to your downloads.", "success");
+            showToast("Certificate Downloaded", "The high-quality credentials PNG has been saved to your device.", "success");
         }
 
         function shareCertificateByEmail() {
-            const canvas = document.getElementById('certificateCanvas');
-            const dataUrl = canvas.toDataURL('image/png');
-
-            // Send notification about sharing/download action
             dispatchEmail(
-                "Certificate Notification",
-                `🎓 Certificate Generated: ${participantName}`,
-                `Candidate ${participantName} (${participantEmail}) has successfully unlocked and downloaded their AEM Forms Specialist Certificate.`
+                "Certificate Shared",
+                `🎓 Certificate Unlocked: ${participantName}`,
+                `Candidate ${participantName} (${participantEmail}) has successfully unlocked and saved their AEM Forms Specialist Certificate.`
             );
 
-            showToast("Notification Sent", `Activity notice shared with ${targetEmailAddress}`, "success");
+            showToast("Action Logged", `Achievement update dispatched directly to your systems administrator.`, "success");
         }
 
         /**
-         * CELEBRATION CONFETTI EMITTER
+         * STREAMING_CHUNK:Configuring custom confetti particles emitters
          */
         function triggerConfetti() {
             const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6'];
@@ -1029,7 +1007,6 @@
                 
                 document.body.appendChild(conf);
 
-                // Clean up particle safely
                 setTimeout(() => {
                     conf.remove();
                 }, (duration + 0.5) * 1000);
@@ -1037,7 +1014,7 @@
         }
 
         /**
-         * ARRAY SHUFFLING COMPANION
+         * Array shuffling algorithmic utility
          */
         function shuffleArray(array) {
             let currentIndex = array.length, randomIndex;

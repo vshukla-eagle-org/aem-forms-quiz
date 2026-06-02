@@ -1,2 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEM Forms Technical Mastery Quiz</title>
+    <!-- Include EmailJS SDK for Scenarios 1 & 2 -->
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        :root {
+            --adobe-red: #FA0F00;
+            --charcoal: #2C2C2C;
+            --light-bg: #F8F9FA;
+            --border-color: #D3D3D3;
+            --success: #2E7D32;
+            --error: #C62828;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--light-bg); color: var(--charcoal); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: #ffffff; width: 100%; max-width: 800px; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid var(--adobe-red); }
+        h1 { color: var(--adobe-red); margin-bottom: 10px; font-size: 24px; text-align: center; }
+        .description { font-size: 14px; color: #666; margin-bottom: 25px; text-align: center; line-height: 1.5; }
+        .hidden { display: none !important; }
+        
+        /* Form Styling */
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+        input[type="text"], input[type="email"] { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 14px; transition: border 0.3s; }
+        input:focus { border-color: var(--adobe-red); outline: none; }
+        .error-msg { color: var(--error); font-size: 12px; margin-top: 5px; display: none; }
+        
+        /* Quiz Layout */
+        .q-card { background: #FFF; border: 1px solid var(--border-color); padding: 20px; border-radius: 6px; margin-bottom: 20px; }
+        .q-text { font-weight: 600; font-size: 16px; margin-bottom: 15px; }
+        .options-list { list-style: none; }
+        .option-item { display: flex; align-items: flex-start; margin-bottom: 10px; padding: 10px; border: 1px solid #EFEFEF; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+        .option-item:hover { background: #F0F7FF; }
+        .option-item input { margin-right: 12px; margin-top: 3px; transform: scale(1.1); }
+        
+        /* Buttons */
+        .btn { background-color: var(--adobe-red); color: white; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; transition: background 0.2s; text-transform: uppercase; letter-spacing: 1px; }
+        .btn:hover { background-color: #D00B00; }
+        .btn-reattempt { background-color: #0066CC; }
+        .btn-reattempt:hover { background-color: #004C99; }
+        
+        /* Results view */
+        .results-panel { text-align: center; padding: 20px 0; }
+        .score-big { font-size: 48px; font-weight: bold; margin: 20px 0; }
+        .pass { color: var(--success); }
+        .fail { color: var(--error); }
+        .stats-box { background: #F0F4F8; padding: 15px; border-radius: 6px; margin-bottom: 25px; font-size: 15px; line-height: 1.6; }
+    </style>
+</head>
+<body>
 
-asdaddadasdasd
+<div class="container">
+    <h1>AEM Forms Technical Mastery Evaluation</h1>
+    <p class="description">Based on Adobe Experience Manager 6.4/6.5 Forms Framework tutorials. Requires an 80% score (20/25 correct answers) to pass.</p>
+
+    <!-- STEP 1: Registration Window -->
+    <div id="auth-section">
+        <div class="form-group">
+            <label for="username">Full Name</label>
+            <input type="text" id="username" placeholder="Enter your full name">
+            <div class="error-msg" id="err-name">Name must be at least 2 characters long.</div>
+        </div>
+        <div class="form-group">
+            <label for="useremail">Email Address</label>
+            <input type="email" id="useremail" placeholder="name@company.com">
+            <div class="error-msg" id="err-email">Please enter a valid email address.</div>
+        </div>
+        <button type="button" class="btn" onclick="validateAndStart()">Validate & Start Quiz</button>
+    </div>
+
+    <!-- STEP 2: Main Quiz Interface -->
+    <div id="quiz-section" class="hidden">
+        <div id="questions-container"></div>
+        <button type="button" id="action-btn" class="btn" onclick="evaluateQuiz()">Submit Examination</button>
+    </div>
+
+    <!-- STEP 3: Outcome Display -->
+    <div id="result-section" class="hidden" class="results-panel">
+        <h2 id="result-status">Evaluation Complete</h2>
+        <div id="score-display" class="score-big">0%</div>
+        <div class="stats-box" id="stats-summary"></div>
+        <div id="result-action-placeholder"></div>
+    </div>
+</div>
+
+<script>
+    // --- EMAILJS CONFIGURATION ---
+    // Sign up on emailjs.com to link your GitHub profile email target.
+    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; 
+    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+
+    // Initialize EmailJS
+    (function() {
+        if(EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+            emailjs.init(EMAILJS_PUBLIC_KEY);
+        }
+    })();
+
+    // --- APPLICATION VARIABLES ---
+    let userData = { name: '', email: '' };
+    let attemptsCount = 0;
+    const passingThreshold = 80;
+    const totalQuestionsRequested = 25;
+
+    // --- COMPREHENSIVE AEM FORMS QUESTION DATABANK (25 Unique Items) ---
+    const rawQuestionBank = [
+        { q: "Which framework component creates responsive, personalized, dynamic digital form experiences?", o: ["Adaptive Forms", "Static PDF Forms", "HTML Workspaces", "Print Channel Profiles"], a: 0 },
+        { q: "What tool maps dissimilar backend schemas together into a unified model for an Adaptive Form workflow?", o: ["Form Data Model (FDM)", "Sling Repository Merger", "Workflow Process Archive", "AEM Translation Manager"], a: 0 },
+        { q: "Which tool centralizes, builds, and securely outputs personalized corporate correspondence and statements?", o: ["Interactive Communications", "AEM Sites Portal", "DAM Asset Distribution", "Adaptive Layout Container"], a: 0 },
+        { q: "How can you invoke a Form Data Model Service step programmatically inside AEM system architecture?", o: ["Add it as a process step within an AEM Workflow", "Invoke via client-side CSS Framework injection", "Trigger manually using crxde lite directly", "Write static HTML forms code natively"], a: 0 },
+        { q: "Which versions of Adobe Experience Manager natively apply to the learning pathways outlined in the core guide?", o: ["AEM 6.4 and 6.5", "AEM 6.0 only", "AEM 5.6 Legacy editions", "CQ 4.5 Platforms only"], a: 0 },
+        { q: "What primary persona is specifically targeted in the execution of technical data model configurations?", o: ["Developer", "Content Editor", "Business Marketing Analyst", "UX Layout Designer"], a: 0 },
+        { q: "In an AEM Forms OSGi Workflow context, what can be used as a dynamic variable data layer?", o: ["Form Data Model instances", "Static properties documents", "Client-side localized cache cookies", "CSS Style Sheet Variables"], a: 0 },
+        { q: "What functional module allows field agents to complete forms and sync data back to an core server offline?", o: ["AEM Forms App", "Universal Editor UI", "Dispatcher Proxy Layer", "Sling Engine Servlet"], a: 0 },
+        { q: "Which tool layout is used natively to create interactive, dynamic print channel templates?", o: ["Forms Designer / Workbench", "AEM Screens UI", "Sites Page Context Editor", "Experience Fragments builder"], a: 0 },
+        { q: "What is the out-of-the-box configuration system path used to connect an AEM stack with a MySQL pool?", o: ["Apache Sling Connection Pooled Datasource", "Day CQ Mail Service config", "Adobe Sign API cloud model", "Link Externalizer service config"], a: 0 },
+        { q: "To display custom data properties seamlessly inside an Adaptive Form context, what system rule configuration is utilized?", o: ["Rule Editor Scripting / Rule Engine", "Sling Rewrite pipelines", "ClientLibs inclusion injection", "Authoring Metadata Schema properties"], a: 0 },
+        { q: "Which submit action directly forwards user payload packages safely to a database model configuration?", o: ["Submit using Form Data Model", "Store in localized CQ Page Repository", "Forward to internal system Author logs", "Clear client session parameters cache"], a: 0 },
+        { q: "What feature automatically produces an archival, static visual copy of a completed Adaptive Form instance?", o: ["Document of Record (DoR)", "Interactive Communication Web channel", "JSON Schema Definition asset", "Workflow Payload Folder hierarchy"], a: 0 },
+        { q: "Which service configuration handles administrative out-of-office message distributions and automatic notifications?", o: ["Day CQ Mail Service", "Apache Sling Logging Logger", "FDM Prefill Engine instance", "AEM Forms App Workspace configuration"], a: 0 },
+        { q: "To expose enterprise cloud platforms like Microsoft SharePoint to AEM Forms, you configure a:", o: ["Cloud Service Configuration", "OSGi Environment System Property File", "Dispatcher Cache Rewriting Logic rule", "ClientLib folder package configuration"], a: 0 },
+        { q: "What layer caches structural code fragments but requires explicit configurations to pass AEM Form parameters?", o: ["AEM Dispatcher Instance", "CRX OAK Repository Core", "Jetty Application Servlet Engine", "AEM Form Container Layout Context"], a: 0 },
+        { q: "What configuration properties can prefill and instantiate form field information seamlessly for users?", o: ["Form Data Model Prefill Service", "Metadata Tagging profiles Manager", "Custom ClientLib JavaScript functions", "Apache Sling Model context annotations"], a: 0 },
+        { q: "Which editor tool interface handles layout styling variables like color themes and typography globally?", o: ["Theme Editor Panel", "CRXDE Lite System Directory", "Workflow Models Creation Manager", "Form Data Model graphical workspace UI"], a: 0 },{ q: "What core user group membership allows administrative privileges to construct and manipulate Workflow Models?", o: ["workflow-editor", "forms-users", "everyone", "anonymous-access-group"], a: 0 },{ q: "How are external third-party digital signers bound to automated workspace approval pathways?", o: ["Acrobat Sign Cloud Integration step", "Basic HTML form field checks", "Local system keychain configurations", "Apache Sling Authentication Filter tweaks"], a: 0 },{ q: "What file extension is used to construct structural form templates inside Adobe Forms Designer?", o: [".XDP format file", ".HTML text source", ".CSS configuration sheet", ".JAR framework archive file"], a: 0 },{ q: "To map data points smoothly into an Adaptive Form component without structural schema coding, you configure a:", o: ["Bind Reference Property", "Sling Selector query pattern", "CQ Include path string", "ClientLib category array reference"], a: 0 },{ q: "What configuration validates that user-submitted dataset entries conform strictly to transactional rules?", o: ["Form Data Model Validation Levels", "CSS styling presentation conditions", "Dispatcher caching farm rule lists", "Authoring page tagging structures"], a: 0 },{ q: "What directory folder pattern maps custom localized form modules to the external cloud infrastructure web channel?", o: ["/content/forms/af/", "/apps/system/config/", "/etc/clientlibs/global/", "/var/audit/workflow/"], a: 0 },{ q: "Which tool enables rapid document authoring for business profiles using Microsoft Excel or Google Sheets?", o: ["Edge Delivery Services for AEM Forms", "AEM Forms Workbench core app", "Traditional OSGi Foundation containers", "Classic Forms Workspace interface portal"], a: 0 }];
+
+    <script>
+// --- SCENARIO 1: Notification Pipeline ---function sendNotificationEmail(type, currentScore = 0) {if(EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY") {console.log([EmailJS Simulation] Email dispatched to GitHub owner profile. Type: ${type}. User: ${userData.email}. Attempts: ${attemptsCount}. Score: ${currentScore}%);return;}let templateParams = {notification_type: type,user_name: userData.name,user_email: userData.email,attempts_taken: attemptsCount,quiz_score: currentScore + "%",timestamp: new Date().toISOString()};emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams).then(function(response) {console.log('Notification email transferred successfully.', response.status, response.text);}, function(error) {console.error('Email pipeline execution fault:', error);});}// --- FORM ENTRY COMPONENT VALIDATION ---function validateAndStart() {const nameInput = document.getElementById('username').value.trim();const emailInput = document.getElementById('useremail').value.trim();let isValid = true;if (nameInput.length < 2) {document.getElementById('err-name').style.display = 'block';isValid = false;} else {document.getElementById('err-name').style.display = 'none';}const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;if (!emailRegex.test(emailInput)) {document.getElementById('err-email').style.display = 'block';isValid = false;} else {document.getElementById('err-email').style.display = 'none';}if (isValid) {userData.name = nameInput;userData.email = emailInput;// Hide registration window, reveal quiz windowdocument.getElementById('auth-section').classList.add('hidden');document.getElementById('quiz-section').classList.remove('hidden');// Scenario 1: Trigger notification mail immediately upon user validation entry passesattemptsCount++;sendNotificationEmail("Initial Registration & Start Attempt");loadQuizState();}}// --- RANDOMIZATION & RENDER SYSTEM ---let ActiveQuestionsList = [];function loadQuizState() {// Create shallow clone copy and shuffle the array content randomlyActiveQuestionsList = [...rawQuestionBank].sort(() => Math.random() - 0.5);const container = document.getElementById('questions-container');container.innerHTML = '';ActiveQuestionsList.forEach((item, index) => {const card = document.createElement('div');card.className = 'q-card';const qTitle = document.createElement('div');qTitle.className = 'q-text';qTitle.innerText = ${index + 1}. ${item.q};card.appendChild(qTitle);const optionsUl = document.createElement('ul');optionsUl.className = 'options-list';item.o.forEach((optionText, optionIdx) => {const li = document.createElement('li');li.className = 'option-item';// Wrap inner structure to allow click triggers effortlesslyli.innerHTML = <label style="display:flex; width:100%; cursor:pointer; font-weight:normal;"> <input type="radio" name="question_${index}" value="${optionIdx}"> <span>${optionText}</span> </label>;optionsUl.appendChild(li);});card.appendChild(optionsUl);container.appendChild(card);});window.scrollTo(0, 0);}// --- SCORING & SCENARIO 2 EXECUTION ENGINE ---function evaluateQuiz() {let correctCount = 0;ActiveQuestionsList.forEach((item, index) => {const selectedInput = document.querySelector(input[name="question_${index}"]:checked);if (selectedInput && parseInt(selectedInput.value) === item.a) {correctCount++;}});const finalCalculatedScore = Math.round((correctCount / totalQuestionsRequested) * 100);const hasPassed = finalCalculatedScore >= passingThreshold;// Transitions views safely inside single page scopedocument.getElementById('quiz-section').classList.add('hidden');const resultsView = document.getElementById('result-section');resultsView.classList.remove('hidden');const scoreElement = document.getElementById('score-display');const statusElement = document.getElementById('result-status');const statsSummary = document.getElementById('stats-summary');const actionPlaceholder = document.getElementById('result-action-placeholder');scoreElement.innerText = ${finalCalculatedScore}%;statsSummary.innerHTML = <strong>Candidate Profile:</strong> ${userData.name} (${userData.email})<br> <strong>Total Attempts Tracked:</strong> ${attemptsCount}<br> <strong>Correct Answers:</strong> ${correctCount} out of ${totalQuestionsRequested} Questions;if (hasPassed) {statusElement.innerText = "Congratulations! Examination Passed";statusElement.className = "pass";scoreElement.className = "score-big pass";actionPlaceholder.innerHTML = <p style="color:var(--success); font-weight:bold;">Certification criteria met perfectly. Your test logs have been routed.</p>;// Scenario 2: User passed the quiz -> notify the github owner profile with attempt metricsendNotificationEmail("Quiz Passed Successfully", finalCalculatedScore);} else {statusElement.innerText = "Examination Criteria Unmet";statusElement.className = "fail";scoreElement.className = "score-big fail";// Append a responsive, randomized re-attempt call action instead of submission triggersactionPlaceholder.innerHTML = <button type="button" class="btn btn-reattempt" onclick="triggerReattempt()">Reattempt Evaluation</button>;// Update tracking for future pipelines, notify database logs if needed via code modification hookssendNotificationEmail("Attempt Failure Logged", finalCalculatedScore);}}function triggerReattempt() {attemptsCount++;// Toggle frames back cleanlydocument.getElementById('result-section').classList.add('hidden');document.getElementById('quiz-section').classList.remove('hidden');// Reload fresh quiz content using updated, alternative randomization matrix setsloadQuizState();}
+</script>

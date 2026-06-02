@@ -35,10 +35,11 @@
             padding-bottom: 10px;
             margin-top: 0;
         }
-        /* State management visibility mechanics */
+        /* Hidden state management rules */
         .gate-screen, .quiz-screen, .result-screen {
             display: none !important;
         }
+        /* Forced visible active class */
         .active-view {
             display: block !important;
         }
@@ -188,7 +189,7 @@
 </div>
 
 <script>
-    // OPTIONAL: Paste your Google Apps Script URL here to enable automatic background emails.
+    // OPTIONAL CONFIGURATION: Paste your Google Webhook URL here to listen to auto-emails
     const WEBHOOK_URL = ""; 
 
     let attemptCount = 0;
@@ -196,7 +197,7 @@
     const passingThreshold = 80;
     const totalQuestions = 25;
 
-    // Core Assessment Questions Data (Sourced from Adobe Documentation link)
+    // Full 25-Question Dataset covering all major AEM Forms documentation tracks
     const quizQuestions = [
         { id: 1, q: "An engineering team needs to deliver dynamic, web-responsive digital enrollment solutions that adjust layout seamlessly across mobile screens. Which asset format from AEM Forms must they select?", options: ["Interactive Communications Print Channels", "Adaptive Forms", "Static XDP layouts via Forms Designer", "HTML5 Forms Workspace task logs"], correct: 1 },
         { id: 2, q: "You are designing a unified communication statement system that combines marketing collateral, operational statements, and secure offline transactional bills. Which design asset is engineered specifically for this scenario?", options: ["Form Data Model", "Sling Servlets", "Interactive Communications", "OSGi Configurations"], correct: 2 },

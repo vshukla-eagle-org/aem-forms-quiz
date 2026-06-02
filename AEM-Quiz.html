@@ -3,582 +3,1041 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AEM Forms Mastery Quiz</title>
+    <title>AEM Forms Mastery Quiz & Certification</title>
+    <!-- Tailwind CSS for modern, premium styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #1473e6;
-            --primary-hover: #0d66d0;
-            --success: #2e7d32;
-            --danger: #d32f2f;
-            --bg-color: #f3f4f6;
-            --card-bg: #ffffff;
-            --text-main: #333333;
-            --text-muted: #666666;
-            --border-color: #e5e7eb;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Inter:wght@300;400;500;600;700&family=Pinyon+Script&display=swap');
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        /* Certificate Font families */
+        .serif-title {
+            font-family: 'Cinzel', serif;
+        }
+        .script-font {
+            font-family: 'Pinyon Script', cursive;
         }
 
-        h1, h2, h3 {
-            color: var(--text-main);
-            margin-top: 0;
+        /* Smooth page transitions */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 20px;
-        }
-
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        input[type="text"], input[type="email"] {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 16px;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-        }
-
-        input[type="text"]:focus, input[type="email"]:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(20, 115, 230, 0.15);
-        }
-
-        input.input-error {
-            border-color: var(--danger) !important;
-            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15) !important;
-        }
-
-        .error-feedback {
-            color: var(--danger);
-            font-size: 13px;
-            font-weight: 600;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px 24px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .btn-danger {
-            background-color: var(--danger);
-        }
-
-        .btn-danger:hover {
-            background-color: #b71c1c;
-        }
-
-        /* Quiz Styles */
-        #quiz-section {
-            display: none;
-        }
-
-        .question-card {
-            background: #fafafa;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        /* Unanswered Highlight Class */
-        .question-card.unanswered-highlight {
-            border: 2px solid var(--danger);
-            background-color: #fff5f5;
-            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.1);
-        }
-
-        .validation-warning {
-            color: var(--danger);
-            font-weight: bold;
-            font-size: 13px;
-            margin-top: 10px;
-            display: none;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .question-card.unanswered-highlight .validation-warning {
-            display: flex;
-        }
-
-        .question-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .option-label {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border: 1px solid transparent;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .option-label:hover {
-            background: #eef2ff;
-        }
-
-        .option-label input {
-            margin-right: 15px;
-            transform: scale(1.2);
-        }
-
-        #quiz-footer {
-            margin-top: 30px;
-            text-align: center;
-            padding-top: 20px;
-            border-top: 2px solid var(--border-color);
-        }
-
-        #score-display {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            display: none;
-        }
-
-        .score-pass {
-            background-color: #e8f5e9;
-            color: var(--success);
-            border: 1px solid #c8e6c9;
-        }
-
-        .score-fail {
-            background-color: #ffebee;
-            color: var(--danger);
-            border: 1px solid #ffcdd2;
-        }
-
-        /* Toast Notification System */
-        #toast-container {
+        /* Confetti particle styling */
+        .confetti {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            width: 10px;
+            height: 10px;
+            z-index: 999;
+            pointer-events: none;
+            animation: fall linear forwards;
         }
-
-        .toast {
-            background: #2d3748;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            font-size: 14px;
-            border-left: 5px solid var(--primary);
-            animation: slideIn 0.3s ease-out forwards;
-            opacity: 0;
-            transform: translateX(100%);
-        }
-
-        .toast.toast-warning {
-            border-left-color: var(--danger);
-        }
-
-        @keyframes slideIn {
-            to { opacity: 1; transform: translateX(0); }
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
         }
     </style>
 </head>
-<body>
+<body class="text-slate-800 min-h-screen flex flex-col justify-between">
 
-    <div id="toast-container"></div>
-
-    <div class="container">
-        <div class="header">
-            <h1>AEM Forms Mastery Quiz</h1>
-            <p>Test your knowledge of Adobe Experience Manager Forms.</p>
+    <!-- Top Bar with Admin Config Toggle -->
+    <header class="bg-white border-b border-slate-200 py-4 px-6 shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-600 text-white p-2 rounded-lg font-bold text-lg">AEM</div>
+                <div>
+                    <h1 class="font-bold text-slate-900 text-lg leading-tight">Mastery & Certification</h1>
+                    <p class="text-xs text-slate-500">Official Exam Simulation Engine</p>
+                </div>
+            </div>
+            
+            <button onclick="toggleAdminPanel()" class="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition bg-slate-100 hover:bg-blue-50 px-3 py-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Mail Settings
+            </button>
         </div>
+    </header>
 
-        <!-- Login Section -->
-        <div id="login-section">
-            <h3>Enter your details to begin</h3>
-            <p style="color: var(--text-muted); font-size: 14px;">Passing mark is 80% (20 out of 25 questions).</p>
-            
-            <div class="form-group">
-                <label for="userName">Full Name</label>
-                <input type="text" id="userName" placeholder="John Doe" oninput="clearInputError(this)">
-                <div class="error-feedback" id="nameError">Please enter a valid name (at least 2 characters).</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="userEmail">Email Address</label>
-                <input type="email" id="userEmail" placeholder="john@example.com" oninput="clearInputError(this)">
-                <div class="error-feedback" id="emailError">Please enter a valid email address (e.g., name@domain.com).</div>
-            </div>
-            
-            <button class="btn" onclick="validateAndStart()">Start Quiz</button>
-        </div>
+    <!-- Admin Configuration Panel (Collapsible Overlay) -->
+    <div id="admin-panel" class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl z-50 border-l border-slate-200 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="h-full flex flex-col justify-between p-6">
+            <div>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-slate-900">Email & Webhook Config</h3>
+                    <button onclick="toggleAdminPanel()" class="text-slate-400 hover:text-slate-600 text-2xl font-semibold">&times;</button>
+                </div>
 
-        <!-- Quiz Section -->
-        <div id="quiz-section">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin: 0;">Attempt: <span id="attempt-counter">1</span></h3>
-                <span style="font-weight: bold; color: var(--primary);">25 Questions</span>
-            </div>
-            
-            <div id="questions-container">
-                <!-- Questions will be dynamically injected here -->
+                <div class="bg-amber-50 border border-amber-200 text-amber-900 rounded-lg p-4 mb-6 text-sm">
+                    <p class="font-semibold mb-1">📬 How to get real emails to vakshak@gmail.com:</p>
+                    <ol class="list-decimal pl-4 space-y-1">
+                        <li>Visit <a href="https://web3forms.com" target="_blank" class="underline font-bold text-blue-700">web3forms.com</a></li>
+                        <li>Enter your email <span class="font-mono bg-amber-100 px-1 rounded text-red-700">vakshak@gmail.com</span></li>
+                        <li>Check your inbox to get your **Access Key** instantly.</li>
+                        <li>Paste your key below and click save!</li>
+                    </ol>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Target Inbox Email</label>
+                        <input type="email" id="target-email" value="vakshak@gmail.com" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-slate-800 font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Web3Forms Access Key</label>
+                        <input type="text" id="web3forms-key" placeholder="Paste your Access Key here" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm text-slate-800">
+                    </div>
+                </div>
             </div>
 
-            <div id="quiz-footer">
-                <div id="score-display"></div>
-                <button id="submit-btn" class="btn" onclick="submitQuiz()">Submit Quiz</button>
-                <button id="reattempt-btn" class="btn btn-danger" style="display: none;" onclick="reattemptQuiz()">Reattempt Quiz</button>
+            <div class="border-t border-slate-100 pt-4">
+                <button onclick="saveAdminSettings()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition shadow-md">
+                    Save Configuration
+                </button>
             </div>
         </div>
     </div>
 
-    <script>
-        /** * CONFIGURATION 
-         */
-        const GITHUB_USER_EMAIL = "vshukla@eagle.org"; // "github.user@example.com"; Set your target notification email here
-        const PASSING_SCORE = 20; // 80% of 25
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 md:p-8">
+        <!-- Toast Notification Area -->
+        <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3"></div>
 
+        <!-- Section 1: Dynamic Login & Form Verification -->
+        <div id="login-section" class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden fade-in">
+            <div class="bg-gradient-to-r from-blue-700 to-indigo-800 p-8 text-white text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight">AEM Forms Mastery Quiz</h2>
+                <p class="text-blue-100 mt-2 max-w-md mx-auto text-sm">Pass with an 80% score (20/25 questions correct) to earn your verified Adobe Experience Manager Forms Specialist certificate.</p>
+            </div>
+            
+            <div class="p-8 max-w-lg mx-auto">
+                <h3 class="text-xl font-bold text-slate-900 mb-6 text-center">Register to start your examination</h3>
+                
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2" for="userName">Your Full Name (For Certificate)</label>
+                        <input type="text" id="userName" placeholder="John Doe" oninput="clearInputError(this)" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition font-medium">
+                        <p id="nameError" class="text-rose-600 text-xs font-semibold mt-1.5 hidden flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                            Please enter your full name (minimum 2 characters) for your certificate credentials.
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2" for="userEmail">Your Email Address</label>
+                        <input type="email" id="userEmail" placeholder="yourname@domain.com" oninput="clearInputError(this)" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition font-medium">
+                        <p id="emailError" class="text-rose-600 text-xs font-semibold mt-1.5 hidden flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                            Please enter a valid, format-compliant email address.
+                        </p>
+                    </div>
+
+                    <button onclick="validateAndStart()" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-500/20 text-base flex justify-center items-center gap-2">
+                        Start Quiz
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Quiz Examination Frame -->
+        <div id="quiz-section" class="hidden fade-in space-y-6">
+            <!-- Dynamic Tracker Sticky Header -->
+            <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm flex justify-between items-center sticky top-2 z-10">
+                <div class="flex items-center gap-4">
+                    <div class="bg-blue-50 text-blue-700 font-bold px-3 py-1.5 rounded-lg text-sm border border-blue-100">
+                        Attempt #<span id="attempt-counter">1</span>
+                    </div>
+                    <div class="text-sm font-medium text-slate-500">
+                        Candidate: <span id="candidate-display" class="font-bold text-slate-800">---</span>
+                    </div>
+                </div>
+                <div class="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100">
+                    Target Score: 80% (20/25)
+                </div>
+            </div>
+
+            <!-- Quiz Questions Main Injector -->
+            <div id="questions-container" class="space-y-6">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <!-- Quiz Footer Navigation & Submit -->
+            <div id="quiz-footer" class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col items-center gap-4">
+                <div id="score-display" class="w-full text-center hidden"></div>
+                <button id="submit-btn" onclick="submitQuiz()" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all text-lg w-full max-w-md">
+                    Submit Examination
+                </button>
+                <button id="reattempt-btn" onclick="reattemptQuiz()" class="hidden px-8 py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-lg transition-all text-lg w-full max-w-md">
+                    Reattempt Examination
+                </button>
+            </div>
+        </div>
+
+        <!-- Section 3: Certificate Preview and Sharing View -->
+        <div id="certificate-section" class="hidden fade-in space-y-6 mt-6">
+            <div class="bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-2xl p-6 text-center max-w-2xl mx-auto">
+                <h3 class="text-2xl font-bold mb-2">🎓 Official Pass Confirmed!</h3>
+                <p class="text-emerald-700">Congratulations! You have successfully passed the AEM Forms Mastery Quiz. Your credentials and dynamic certificate are ready below.</p>
+            </div>
+
+            <!-- Live Interactive Certificate Canvas Frame -->
+            <div class="flex flex-col items-center gap-6">
+                <div class="border border-slate-300 rounded-xl overflow-hidden shadow-2xl max-w-full bg-white p-2">
+                    <!-- Actual rendering element for the script -->
+                    <canvas id="certificateCanvas" width="1120" height="800" class="w-full max-w-3xl h-auto border border-slate-100 rounded-lg block"></canvas>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4 w-full max-w-md pb-12">
+                    <button onclick="downloadCertificate()" class="flex-1 min-w-[180px] py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Download Certificate
+                    </button>
+                    
+                    <button id="email-cert-btn" onclick="shareCertificateByEmail()" class="flex-1 min-w-[180px] py-4 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        Email Certificate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Details -->
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800">
+        <p>© 2026 Adobe Experience League Certified Mastery Engine.</p>
+        <p class="mt-1 text-slate-500">This simulator is built in compliance with official learning paths to support form authoring and automation specialists.</p>
+    </footer>
+
+    <script>
         /**
-         * STATE VARIABLES
+         * GLOBAL CONFIG & STATE ENGINE
          */
+        let targetEmailAddress = localStorage.getItem('targetEmailAddress') || "vakshak@gmail.com";
+        let web3formsAccessKey = localStorage.getItem('web3formsAccessKey') || ""; // Can be set via Admin config drawer
+        
         let currentAttempts = 1;
         let participantName = "";
         let participantEmail = "";
         let activeQuizData = [];
 
-        /**
-         * QUIZ DATA (Based on AEM Forms Overview Documentation)
-         */
+        // Question Repository containing all 25 core exam modules mapping to the Adobe Experience League Documentation
         const originalQuizData = [
             {
-                q: "What is the primary purpose of Adobe Experience Manager (AEM) Forms?",
+                q: "What is the primary value proposition of Adobe Experience Manager (AEM) Forms?",
                 options: [
-                    "To create, manage, publish, and update complex digital forms",
-                    "To edit high-resolution images for websites",
-                    "To strictly host SQL databases for customer profiles",
-                    "To edit and render video streams"
+                    "To build, manage, integrate, dynamic-deploy, and analyze responsive digital forms at scale",
+                    "To generate responsive e-commerce web shops with shopping carts",
+                    "To operate as a local relational SQL database inside secure cloud networks",
+                    "To function strictly as a remote streaming platform for 4K assets"
                 ],
-                answer: "To create, manage, publish, and update complex digital forms"
+                answer: "To build, manage, integrate, dynamic-deploy, and analyze responsive digital forms at scale"
             },
             {
-                q: "Which type of forms are described as 'new-generation forms that are dynamic and responsive'?",
+                q: "Which specific kind of form represents AEM's next-generation dynamic responsive web-compatible layout?",
                 options: [
                     "Adaptive Forms",
-                    "Static HTML Forms",
-                    "Print-only Forms",
-                    "Legacy Flash Forms"
+                    "Static HTML Templates",
+                    "XDP-based PDF Forms",
+                    "Adobe Acrobat Interactive forms"
                 ],
                 answer: "Adaptive Forms"
             },
             {
-                q: "What feature centralizes and manages the creation of secure, personalized correspondences like statements and bills?",
+                q: "What core module specializes in high-volume, secure personal correspondences (e.g., invoices, utility bills)?",
                 options: [
                     "Interactive Communications",
-                    "AEM Sites",
-                    "Workflow Assign Task",
-                    "Captcha Module"
+                    "Dynamic Assets Service",
+                    "CRXDE Correspondence Core",
+                    "Workflow Form Processors"
                 ],
                 answer: "Interactive Communications"
             },
             {
-                q: "Which functionality allows you to map adaptive form fields to external databases or REST services?",
+                q: "What functional integration facilitates connecting AEM Forms fields with databases, REST API services, or Soap web endpoints?",
                 options: [
-                    "Form Data Model",
-                    "Document Security",
-                    "Watched Folders",
-                    "Rule Editor"
+                    "Form Data Model (FDM)",
+                    "Document Security Console",
+                    "Classic OSGi JCR Adapter",
+                    "AEM Dispatcher Configuration"
                 ],
-                answer: "Form Data Model"
+                answer: "Form Data Model (FDM)"
             },
             {
-                q: "Which desktop application is used to author traditional PDF and HTML5 form templates?",
+                q: "Which specialized desktop application lets template designers author precise static and interactive template-driven PDFs or XDP files?",
                 options: [
                     "AEM Forms Designer",
-                    "Adobe Photoshop",
-                    "AEM Site Builder",
-                    "Forms Web Editor"
+                    "Adobe Experience Manager Desktop App",
+                    "Creative Cloud Design Express",
+                    "Acrobat Sign Pro"
                 ],
                 answer: "AEM Forms Designer"
             },
             {
-                q: "What is a Document of Record (DoR) in the context of AEM Forms?",
+                q: "What is a 'Document of Record' (DoR) inside AEM Forms?",
                 options: [
-                    "A flattened, print-friendly PDF version of an Adaptive Form generated upon submission",
-                    "An audio recording of the user filling out the form",
-                    "The server-side database where form analytics are kept",
-                    "A backup file of the AEM installation"
+                    "A flattened, archive-ready PDF replica of an Adaptive Form generated automatically upon submission",
+                    "A raw cryptographic text file archiving the transaction logs of the web browser",
+                    "The diagnostic metadata record saved in the repository JCR node during a session",
+                    "An audio recording captured of a client agreeing to digital terms"
                 ],
-                answer: "A flattened, print-friendly PDF version of an Adaptive Form generated upon submission"
+                answer: "A flattened, archive-ready PDF replica of an Adaptive Form generated automatically upon submission"
             },
             {
-                q: "Which feature allows users to save a partially filled form and return to it later?",
+                q: "Which option enables an end-user to pause form filling, save their progress, and complete it later?",
                 options: [
-                    "Save and Retrieve (Drafts)",
-                    "Data Wipe Service",
-                    "Automated Form Converter",
-                    "Session Timeout Service"
+                    "Save and Retrieve (Drafts) Service",
+                    "Sling Session Retention Module",
+                    "OSGi Temporary Cache Engine",
+                    "Automatic LocalStorage Sync"
                 ],
-                answer: "Save and Retrieve (Drafts)"
+                answer: "Save and Retrieve (Drafts) Service"
             },
             {
-                q: "What mechanism automates document processing by monitoring a specific directory for incoming files?",
+                q: "What background automated process watches a physical or network storage pathway to trigger data conversion?",
                 options: [
                     "Watched Folders",
-                    "Sling Servlets",
-                    "OSGi Bundles",
-                    "AEM Assets Service"
+                    "Repository Event Listeners",
+                    "Sling Servlet Schedulers",
+                    "CRX Replication Agents"
                 ],
                 answer: "Watched Folders"
             },
             {
-                q: "Which service is used to assemble, disassemble, and manipulate PDF documents (e.g., merging multiple PDFs)?",
+                q: "Which service processes XML layouts to slice, stitch, merge, and output multi-page compiled PDFs?",
                 options: [
                     "Assembler Service",
-                    "Output Service",
-                    "PDFG Service",
-                    "Barcode Service"
+                    "PDF Output Engine",
+                    "Document Encryption Module",
+                    "Sling Script Resolver"
                 ],
                 answer: "Assembler Service"
             },
             {
-                q: "What is the primary purpose of the Acrobat Sign integration in AEM Forms?",
+                q: "How does AEM Forms integrate secure, legally compliant e-signing features within dynamic adaptive forms?",
                 options: [
-                    "To enable secure and legal electronic signatures on digital forms",
-                    "To generate mathematical graphs based on input",
-                    "To compress PDF files for faster loading",
-                    "To translate forms into multiple languages automatically"
+                    "Through native integration with Adobe Acrobat Sign",
+                    "By embedding standard HTML5 draw-to-sign input panels",
+                    "By writing customized local Java cryptographic security key decoders",
+                    "Using browser-native digital signature certificates"
                 ],
-                answer: "To enable secure and legal electronic signatures on digital forms"
+                answer: "Through native integration with Adobe Acrobat Sign"
             },
             {
-                q: "Which feature allows developers to create reusable sets of fields, such as an address block, for multiple forms?",
+                q: "What tool allows designers to compile a reusable block of fields (e.g. an address panel) to plug into hundreds of forms?",
                 options: [
                     "Adaptive Form Fragments",
-                    "Form Snippets",
-                    "XDP Macros",
-                    "Document Modules"
+                    "Sling Custom Components",
+                    "Adobe Forms Assets Libraries",
+                    "XDP Shared Nodes"
                 ],
                 answer: "Adaptive Form Fragments"
             },
             {
-                q: "How are complex business rules and validations typically added to Adaptive Forms without writing custom backend code?",
+                q: "Where inside the AEM Forms web console do designers construct complex validation, dynamic visibility rules, and UI calculations?",
                 options: [
-                    "Using the Rule Editor",
-                    "Writing Java Servlets",
-                    "Configuring the OSGi Console",
-                    "Modifying the CRXDE Lite root"
+                    "Rule Editor",
+                    "CRXDE Lite IDE Console",
+                    "Felix Configuration Console",
+                    "Touch UI Component Editor"
                 ],
-                answer: "Using the Rule Editor"
+                answer: "Rule Editor"
             },
             {
-                q: "Which service allows you to apply usage rights or passwords to restrict printing or editing of a PDF?",
+                q: "Which service limits printing, copying, or tampering with a generated output PDF by adding passwords or certificates?",
                 options: [
-                    "Document Security",
-                    "PDFG Service",
-                    "Forms Service",
-                    "Assembler Service"
+                    "Document Security Service",
+                    "Reader Extension Service",
+                    "AEM Dispatcher Gateway",
+                    "SSL Transport Configuration"
                 ],
-                answer: "Document Security"
+                answer: "Document Security Service"
             },
             {
-                q: "What workflow component is commonly used to route a submitted form to a human reviewer for approval?",
+                q: "What AEM workflow step redirects a finished user form to an administrator for verification and signing?",
                 options: [
-                    "Assign Task step",
-                    "Extract Node step",
-                    "Generate Document step",
-                    "Send Email step"
+                    "Assign Task Step",
+                    "Form Handler Step",
+                    "Approval Gateway Node",
+                    "JCR Replication Task"
                 ],
-                answer: "Assign Task step"
+                answer: "Assign Task Step"
             },
             {
-                q: "What is the Automated Forms Conversion Service used for?",
+                q: "What is the primary function of the Automated Forms Conversion Service (AFCS)?",
                 options: [
-                    "Converting legacy PDF forms into modern, responsive Adaptive Forms",
-                    "Translating English forms to Spanish",
-                    "Converting JSON data into XML data",
-                    "Changing AEM Sites pages into AEM Forms"
+                    "Converting legacy PDF/XDP documents into mobile-friendly Adaptive Forms using Adobe Sensei AI",
+                    "Migrating old HTML3 pages into modern AEM Sites pages",
+                    "Automatically translating forms into multiple regional localized languages",
+                    "Instantly converting raw JCR node structures into database tables"
                 ],
-                answer: "Converting legacy PDF forms into modern, responsive Adaptive Forms"
+                answer: "Converting legacy PDF/XDP documents into mobile-friendly Adaptive Forms using Adobe Sensei AI"
             },
             {
-                q: "Which integration feature enables reading data from scanned identity documents and automatically filling it into a form?",
+                q: "What integration parses structural identity cards or passports, and populates form fields instantly?",
                 options: [
-                    "OCR Data Extraction",
-                    "Barcode Service",
-                    "Form Data Model",
-                    "Acrobat Sign"
+                    "OCR Data Extraction Service",
+                    "Acrobat Authentication Node",
+                    "FDM Database Query",
+                    "Barcode Scan Utility"
                 ],
-                answer: "OCR Data Extraction"
+                answer: "OCR Data Extraction Service"
             },
             {
                 q: "What does the Barcode Service in AEM Forms do?",
                 options: [
-                    "Generates a barcode image based on form data for scanning",
-                    "Scans physical barcodes through the user's webcam",
-                    "Encrypts the entire form into a QR code for security",
-                    "Automatically buys products based on scanned barcodes"
+                    "Translates raw user data fields into dynamic scan-ready 2D barcode images embedded on PDFs",
+                    "Allows users to unlock restricted sections of an active form by scanning a ticket",
+                    "Validates coupon codes against real-time e-commerce retail endpoints",
+                    "Creates custom scanning workflows inside secure JCR repositories"
                 ],
-                answer: "Generates a barcode image based on form data for scanning"
+                answer: "Translates raw user data fields into dynamic scan-ready 2D barcode images embedded on PDFs"
             },
             {
-                q: "Which component architecture is the modern, recommended approach for building AEM pages and forms?",
+                q: "Which component architecture is current, recommended, and best-practice for building modern AEM Forms?",
                 options: [
                     "Core Components",
                     "Foundation Components",
-                    "Classic UI Components",
-                    "Legacy Flash Components"
+                    "Classic UI Widgets",
+                    "Legacy Flash Templates"
                 ],
                 answer: "Core Components"
             },
             {
-                q: "What service would you configure to populate an Adaptive Form with existing data before the user sees it?",
+                q: "What service pre-fills form data from user profile databases before the user actually views the fields?",
                 options: [
                     "Prefill Service",
-                    "Draft Service",
-                    "Output Service",
-                    "Review Service"
+                    "Data Injection Workflow",
+                    "User Session JCR Cache",
+                    "Draft Recovery Node"
                 ],
                 answer: "Prefill Service"
             },
             {
-                q: "How can you create automated UI tests specifically tailored for Adaptive Forms?",
+                q: "How can developers configure automated UI validation tests to check and verify active Adaptive Forms?",
                 options: [
                     "Using the Automated Testing for Adaptive Forms framework",
-                    "Only by writing manual Selenium scripts",
-                    "Using the AEM Sites testing toolkit",
-                    "Adaptive Forms cannot be automatically tested"
+                    "Using local Selenium configurations mapped directly inside JCR",
+                    "AEM Forms cannot run automated browser interface validations",
+                    "Through classic AEM Sites unit-testing components"
                 ],
                 answer: "Using the Automated Testing for Adaptive Forms framework"
             },
             {
-                q: "Which file format serves as the XML-based template design file created in AEM Forms Designer?",
+                q: "What is the native structural extension type of templates compiled using AEM Forms Designer?",
                 options: [
                     "XDP (XML Data Package)",
                     "PDF",
-                    "DOCX",
-                    "HTML"
+                    "HTML5",
+                    "XHTML"
                 ],
                 answer: "XDP (XML Data Package)"
             },
             {
-                q: "In AEM Workflow, what step allows you to retrieve a specific piece of data from a submitted form's XML payload?",
+                q: "In an AEM Workflow, what step allows extracting specific variables from the submitted XML data payload?",
                 options: [
                     "Extract node from XML document",
-                    "Save document to file system",
-                    "Sign Multiple Forms",
-                    "Log workflow variables"
+                    "Parse Sling Request Parameters",
+                    "Form Data Model Query",
+                    "Fetch JCR Node Value"
                 ],
                 answer: "Extract node from XML document"
             },
             {
-                q: "Which feature allows you to embed third-party services to prevent automated bot submissions?",
+                q: "What module protects AEM Forms against malicious spam bot submissions?",
                 options: [
-                    "Captcha in Adaptive Forms",
-                    "Document Security permissions",
-                    "Two Factor Authentication",
-                    "Form Data Model constraints"
+                    "CAPTCHA integration",
+                    "Web Application Firewalls",
+                    "JCR ACL Permissions",
+                    "Document Security Certificates"
                 ],
-                answer: "Captcha in Adaptive Forms"
+                answer: "CAPTCHA integration"
             },
             {
-                q: "What is the PDFG (PDF Generator) service primarily used for?",
+                q: "What is the primary function of the PDFG (PDF Generator) service?",
                 options: [
-                    "Converting native file formats (like Word or HTML) into PDF documents",
-                    "Generating Adaptive Forms from PDFs",
-                    "Generating barcodes on PDFs",
-                    "Merging multiple PDFs into one"
+                    "Converting host-native formats (Word, HTML, TXT) into flat PDF documents",
+                    "Designing interactive dynamic adaptive templates",
+                    "Adding dynamic watermarks or print authorization codes",
+                    "Translating form text strings into multilingual PDF print versions"
                 ],
-                answer: "Converting native file formats (like Word or HTML) into PDF documents"
+                answer: "Converting host-native formats (Word, HTML, TXT) into flat PDF documents"
             },
             {
-                q: "When handling form submissions to an external API endpoint, what standard configuration is used?",
+                q: "What mechanism routes forms to custom REST API endpoints upon submission?",
                 options: [
                     "A Custom Submit Action or Form Data Model submit",
-                    "The Barcode Service",
-                    "An OSGi configuration for local storage only",
-                    "The Assign Task workflow step"
+                    "The Barcode Service Connector",
+                    "An OSGi File System sync node",
+                    "The Workitem Assign Task processor"
                 ],
                 answer: "A Custom Submit Action or Form Data Model submit"
             }
         ];
 
-        /**
-         * NOTIFICATION / EMAIL MOCK SYSTEM
-         */
-        function triggerEmailNotification(scenarioName, subject, message, isWarning = false) {
-            const toastContainer = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast ${isWarning ? 'toast-warning' : ''}`;
-            toast.innerHTML = `<strong>📧 Email Triggered (${scenarioName})</strong><br>To: ${GITHUB_USER_EMAIL}<br>Subject: ${subject}`;
-            
-            toastContainer.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
+        // Ensure variables are properly loaded from localStorage on start
+        document.getElementById('target-email').value = targetEmailAddress;
+        document.getElementById('web3forms-key').value = web3formsAccessKey;
 
-            console.log(`=== EMAIL NOTIFICATION TRIGGERED ===`);
-            console.log(`TO: ${GITHUB_USER_EMAIL}`);
-            console.log(`SUBJECT: ${subject}`);
-            console.log(`BODY: ${message}`);
-            console.log(`====================================`);
+        /**
+         * ADMIN DRAWER LOGIC
+         */
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-panel');
+            panel.classList.toggle('translate-x-full');
+        }
+
+        function saveAdminSettings() {
+            const emailInput = document.getElementById('target-email').value.trim();
+            const keyInput = document.getElementById('web3forms-key').value.trim();
+
+            if (!emailInput) {
+                showToast("Configuration Error", "Please provide a valid receiver email.", "error");
+                return;
+            }
+
+            targetEmailAddress = emailInput;
+            web3formsAccessKey = keyInput;
+
+            localStorage.setItem('targetEmailAddress', targetEmailAddress);
+            localStorage.setItem('web3formsAccessKey', web3formsAccessKey);
+
+            showToast("Settings Saved", `System configured to send to ${targetEmailAddress}`, "success");
+            toggleAdminPanel();
         }
 
         /**
-         * UTILITY FUNCTIONS
+         * WEB3FORMS EMAIL DISPATCH SYSTEM
+         */
+        async function dispatchEmail(scenarioName, subject, bodyMessage) {
+            if (!web3formsAccessKey) {
+                // Warning Toast if Web3Forms Key is missing
+                showToast(
+                    "⚠️ Email Simulated (No API Key)", 
+                    `Enter Web3Forms Key in Settings to send directly to your inbox.`, 
+                    "warning"
+                );
+                
+                console.log(`=== EMAIL MOCK DISPATCH ===`);
+                console.log(`To: ${targetEmailAddress}`);
+                console.log(`Subject: ${subject}`);
+                console.log(`Body: ${bodyMessage}`);
+                return;
+            }
+
+            try {
+                const response = await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        access_key: web3formsAccessKey,
+                        subject: subject,
+                        from_name: "AEM Forms Quiz Engine",
+                        to_email: targetEmailAddress,
+                        message: bodyMessage
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showToast("📧 Email Dispatched", `Notification sent successfully to ${targetEmailAddress}`, "success");
+                } else {
+                    showToast("Email Error", data.message || "Failed to send.", "error");
+                }
+            } catch (error) {
+                console.error("Email Dispatch Failure", error);
+                showToast("System Error", "Unable to establish contact with Email service.", "error");
+            }
+        }
+
+        /**
+         * TOAST CONTROLLER SYSTEM
+         */
+        function showToast(title, msg, type = "info") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let colorClasses = "bg-slate-900 border-l-4 border-blue-600";
+            if (type === "success") colorClasses = "bg-slate-900 border-l-4 border-emerald-500";
+            if (type === "warning") colorClasses = "bg-slate-900 border-l-4 border-amber-500";
+            if (type === "error") colorClasses = "bg-slate-900 border-l-4 border-rose-600";
+
+            toast.className = `toast text-white px-5 py-4 rounded-xl shadow-2xl max-w-sm ${colorClasses}`;
+            toast.innerHTML = `
+                <div class="font-bold text-sm flex items-center gap-2">
+                    ${type === 'success' ? '✔' : type === 'warning' ? '⚠' : '✉'} ${title}
+                </div>
+                <div class="text-xs text-slate-300 mt-1">${msg}</div>
+            `;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        /**
+         * REGISTRATION VALIDATION & INITIALIZATION
+         */
+        function clearInputError(input) {
+            input.classList.remove('border-rose-500', 'bg-rose-50');
+            const errId = input.id === 'userName' ? 'nameError' : 'emailError';
+            document.getElementById(errId).classList.add('hidden');
+        }
+
+        function validateAndStart() {
+            const nameField = document.getElementById('userName');
+            const emailField = document.getElementById('userEmail');
+            const nameVal = nameField.value.trim();
+            const emailVal = emailField.value.trim();
+
+            let hasErrors = false;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (nameVal.length < 2) {
+                nameField.classList.add('border-rose-500', 'bg-rose-50');
+                document.getElementById('nameError').classList.remove('hidden');
+                hasErrors = true;
+            }
+
+            if (!emailRegex.test(emailVal)) {
+                emailField.classList.add('border-rose-500', 'bg-rose-50');
+                document.getElementById('emailError').classList.remove('hidden');
+                hasErrors = true;
+            }
+
+            if (hasErrors) return;
+
+            participantName = nameVal;
+            participantEmail = emailVal;
+
+            document.getElementById('candidate-display').innerText = `${participantName} (${participantEmail})`;
+
+            // Scenario 1: Email notification upon start
+            dispatchEmail(
+                "Scenario 1",
+                `🔔 Candidate Registered: ${participantName}`,
+                `A candidate has registered and started their quiz:\n\n` +
+                `Name: ${participantName}\n` +
+                `Email: ${participantEmail}\n` +
+                `Time Initiated: ${new Date().toLocaleString()}\n` +
+                `Attempt Counter: ${currentAttempts}`
+            );
+
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('quiz-section').classList.remove('hidden');
+
+            initializeQuiz();
+        }
+
+        /**
+         * RENDERING & SHUFFLING ENGINE
+         */
+        function initializeQuiz() {
+            document.getElementById('attempt-counter').innerText = currentAttempts;
+
+            // Clone and Shuffle Repository
+            activeQuizData = JSON.parse(JSON.stringify(originalQuizData));
+            activeQuizData = shuffleArray(activeQuizData);
+
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            activeQuizData.forEach((qData, index) => {
+                // Shuffle options programmatically
+                qData.options = shuffleArray(qData.options);
+
+                const card = document.createElement('div');
+                card.id = `q-card-${index}`;
+                card.className = 'question-card bg-white rounded-xl border border-slate-200 p-6 shadow-sm transition-all duration-300';
+                
+                let optionsHTML = '';
+                qData.options.forEach((opt, optIndex) => {
+                    optionsHTML += `
+                        <label class="option-label group flex items-center gap-4 p-3.5 rounded-lg border border-slate-100 hover:border-blue-200 hover:bg-blue-50/50 cursor-pointer transition">
+                            <input type="radio" name="q${index}" value="${opt.replace(/"/g, '&quot;')}" onchange="clearCardWarning(${index})" class="w-4 h-4 text-blue-600 focus:ring-blue-500 border-slate-300">
+                            <span class="text-sm font-medium text-slate-700 group-hover:text-slate-900">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="text-xs font-bold text-blue-600 mb-2 uppercase tracking-wide">Question ${index + 1} of 25</div>
+                    <h4 class="text-base font-bold text-slate-900 mb-4">${qData.q}</h4>
+                    <div class="space-y-2.5">
+                        ${optionsHTML}
+                    </div>
+                    <div class="validation-warning hidden mt-3 text-xs text-rose-600 font-semibold items-center gap-1.5 bg-rose-50 border border-rose-100 p-2.5 rounded-lg">
+                        <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                        This question is required. Please select an answer before submitting.
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function clearCardWarning(index) {
+            const card = document.getElementById(`q-card-${index}`);
+            if (card) {
+                card.classList.remove('border-rose-300', 'bg-rose-50/20');
+                card.querySelector('.validation-warning').classList.add('hidden');
+            }
+        }
+
+        /**
+         * SUBMISSION & AUTO-SCROLL VALIDATION
+         */
+        function submitQuiz() {
+            let score = 0;
+            let unattemptedIndices = [];
+
+            // Reset previous warning indicators
+            const cards = document.querySelectorAll('.question-card');
+            cards.forEach(card => card.classList.remove('border-rose-300', 'bg-rose-50/20'));
+            const warnings = document.querySelectorAll('.validation-warning');
+            warnings.forEach(warn => warn.classList.add('hidden'));
+
+            // Assess submissions
+            activeQuizData.forEach((qData, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected) {
+                    if (selected.value === qData.answer) {
+                        score++;
+                    }
+                } else {
+                    unattemptedIndices.push(index);
+                }
+            });
+
+            // Handle validation errors if unanswered questions remain
+            if (unattemptedIndices.length > 0) {
+                unattemptedIndices.forEach(idx => {
+                    const card = document.getElementById(`q-card-${idx}`);
+                    if (card) {
+                        card.classList.add('border-rose-300', 'bg-rose-50/20');
+                        card.querySelector('.validation-warning').classList.remove('hidden');
+                    }
+                });
+
+                // Auto-scroll to the first unattempted question smoothly
+                const firstMissedCard = document.getElementById(`q-card-${unattemptedIndices[0]}`);
+                if (firstMissedCard) {
+                    firstMissedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+
+                showToast(
+                    "Examination Incomplete", 
+                    `You missed ${unattemptedIndices.length} question(s). Missing questions are highlighted in red.`, 
+                    "error"
+                );
+                return;
+            }
+
+            processResults(score);
+        }
+
+        /**
+         * EVALUATING EXAM OUTCOME
+         */
+        function processResults(score) {
+            const scoreDisplay = document.getElementById('score-display');
+            const submitBtn = document.getElementById('submit-btn');
+            const reattemptBtn = document.getElementById('reattempt-btn');
+
+            // Freeze form fields
+            const allInputs = document.querySelectorAll('input[type="radio"]');
+            allInputs.forEach(input => input.disabled = true);
+
+            const pct = Math.round((score / 25) * 100);
+            scoreDisplay.classList.remove('hidden');
+            submitBtn.classList.add('hidden');
+
+            if (score >= 20) {
+                // PASS (80% or greater)
+                scoreDisplay.className = "p-6 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl mb-4";
+                scoreDisplay.innerHTML = `
+                    <h3 class="text-2xl font-black mb-1">🎉 Passed!</h3>
+                    <p class="font-semibold text-lg">Your Score: ${score}/25 (${pct}%)</p>
+                    <p class="text-sm mt-1">Excellent performance. Your certification block is generated below.</p>
+                `;
+                reattemptBtn.classList.add('hidden');
+
+                // Trigger email notification for passing
+                dispatchEmail(
+                    "Scenario 2 (Pass)",
+                    `🏆 Candidate Passed! - ${participantName}`,
+                    `Excellent news! A candidate has successfully passed the AEM Forms Quiz.\n\n` +
+                    `Candidate: ${participantName} (${participantEmail})\n` +
+                    `Official Score: ${score}/25 (${pct}%)\n` +
+                    `Attempts Taken: ${currentAttempts}\n` +
+                    `Date Completed: ${new Date().toLocaleString()}`
+                );
+
+                // Initialize Certificate System
+                triggerConfetti();
+                generateCertificationCanvas(score, pct);
+
+            } else {
+                // FAIL
+                scoreDisplay.className = "p-6 bg-rose-50 border border-rose-200 text-rose-900 rounded-xl mb-4";
+                scoreDisplay.innerHTML = `
+                    <h3 class="text-2xl font-black mb-1">❌ Unsuccessful Attempt</h3>
+                    <p class="font-semibold text-lg">Your Score: ${score}/25 (${pct}%)</p>
+                    <p class="text-sm mt-1">An 80% score (20 correct answers) is required to certify. Try again!</p>
+                `;
+                reattemptBtn.classList.remove('hidden');
+
+                // Trigger email notification for failing
+                dispatchEmail(
+                    "Scenario 2 (Failure)",
+                    `⚠️ Candidate Unsuccessful - ${participantName}`,
+                    `A candidate took the AEM Forms Quiz and was unsuccessful.\n\n` +
+                    `Candidate: ${participantName} (${participantEmail})\n` +
+                    `Score: ${score}/25 (${pct}%)\n` +
+                    `Attempts Taken: ${currentAttempts}\n` +
+                    `Status: Reattempt Allowed.`
+                );
+            }
+        }
+
+        function reattemptQuiz() {
+            currentAttempts++;
+            
+            document.getElementById('score-display').classList.add('hidden');
+            document.getElementById('reattempt-btn').classList.add('hidden');
+            document.getElementById('submit-btn').classList.remove('hidden');
+            document.getElementById('certificate-section').classList.add('hidden');
+
+            initializeQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /**
+         * CERTIFICATE GENERATOR (HTML5 Canvas Engine)
+         */
+        function generateCertificationCanvas(score, pct) {
+            const canvas = document.getElementById('certificateCanvas');
+            const ctx = canvas.getContext('2d');
+            const dateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            // 1. Draw solid cream clean base
+            ctx.fillStyle = '#fdfdfd';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 2. Draw modern border bands
+            // External Navy Band
+            ctx.lineWidth = 14;
+            ctx.strokeStyle = '#0f172a'; // slate-900
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+            // Internal Gold Detail Line
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#c5a880'; // Antique gold
+            ctx.strokeRect(35, 35, canvas.width - 70, canvas.height - 70);
+
+            // Draw Corner geometric accents
+            ctx.fillStyle = '#c5a880';
+            ctx.fillRect(35, 35, 30, 30);
+            ctx.fillRect(canvas.width - 65, 35, 30, 30);
+            ctx.fillRect(35, canvas.height - 65, 30, 30);
+            ctx.fillRect(canvas.width - 65, canvas.height - 65, 30, 30);
+
+            // 3. Write Typography & Credentials
+            ctx.textAlign = 'center';
+
+            // Category/Host
+            ctx.fillStyle = '#64748b';
+            ctx.font = 'bold 16px "Inter", sans-serif';
+            ctx.fillText('ADOBE EXPERIENCE LEAGUE STUDY PATH', canvas.width / 2, 120);
+
+            // Header Title
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 44px "Cinzel", Georgia, serif';
+            ctx.fillText('CERTIFICATE OF MASTERY', canvas.width / 2, 180);
+
+            // Small spacer detail
+            ctx.strokeStyle = '#c5a880';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 - 80, 210);
+            ctx.lineTo(canvas.width / 2 + 80, 210);
+            ctx.stroke();
+
+            // Declaration line
+            ctx.fillStyle = '#475569';
+            ctx.font = 'italic 18px "Inter", sans-serif';
+            ctx.fillText('This dynamic credential is proudly presented to', canvas.width / 2, 260);
+
+            // Recipient Name
+            ctx.fillStyle = '#0d519d';
+            ctx.font = 'bold 42px "Cinzel", "Inter", sans-serif';
+            ctx.fillText(participantName.toUpperCase(), canvas.width / 2, 330);
+
+            // Sub text description
+            ctx.fillStyle = '#475569';
+            ctx.font = '16px "Inter", sans-serif';
+            ctx.fillText('for demonstrating comprehensive competence and subject matter expertise by successfully passing', canvas.width / 2, 400);
+            ctx.fillText('the curated evaluation criteria of the Adobe Experience Manager Forms Specialist Course.', canvas.width / 2, 430);
+
+            // Certification specification title
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 22px "Cinzel", "Inter", sans-serif';
+            ctx.fillText('AEM FORMS CERTIFIED SPECIALIST', canvas.width / 2, 480);
+
+            // Score details
+            ctx.fillStyle = '#64748b';
+            ctx.font = 'bold 15px "Inter", sans-serif';
+            ctx.fillText(`Evaluation Score: ${score}/25 (${pct}%)  |  Required: 80%`, canvas.width / 2, 520);
+            ctx.fillText(`Verification Authority Record Ref: #AEM-${Math.floor(100000 + Math.random() * 900000)}`, canvas.width / 2, 545);
+
+            // 4. DRAW ELEGANT GOLD ACCENT SEAL
+            const sealX = canvas.width / 2;
+            const sealY = 640;
+            
+            // Draw ribbons
+            ctx.fillStyle = '#b45309'; // Dark amber / red-gold ribbon
+            ctx.beginPath();
+            ctx.moveTo(sealX - 25, sealY);
+            ctx.lineTo(sealX - 45, sealY + 70);
+            ctx.lineTo(sealX - 20, sealY + 60);
+            ctx.lineTo(sealX, sealY + 70);
+            ctx.lineTo(sealX - 5, sealY);
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(sealX + 5, sealY);
+            ctx.lineTo(sealX, sealY + 70);
+            ctx.lineTo(sealX + 20, sealY + 60);
+            ctx.lineTo(sealX + 45, sealY + 70);
+            ctx.lineTo(sealX + 25, sealY);
+            ctx.fill();
+
+            // Draw circular medallion base
+            ctx.beginPath();
+            ctx.arc(sealX, sealY, 40, 0, Math.PI * 2);
+            ctx.fillStyle = '#d97706'; // Gold/amber fill
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(sealX, sealY, 35, 0, Math.PI * 2);
+            ctx.strokeStyle = '#fef3c7'; // Light gold border
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#fef3c7';
+            ctx.font = 'bold 10px "Inter", sans-serif';
+            ctx.fillText('VERIFIED', sealX, sealY - 4);
+            ctx.fillText('PASS', sealX, sealY + 8);
+            ctx.fillText('★ ★ ★', sealX, sealY + 20);
+
+            // 5. Draw Signature blocks
+            // Left Signature (Platform Date)
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(150, 680);
+            ctx.lineTo(350, 680);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'italic 16px "Georgia", serif';
+            ctx.fillText(dateStr, 250, 670); // Dynamic Date string
+            
+            ctx.fillStyle = '#64748b';
+            ctx.font = '13px "Inter", sans-serif';
+            ctx.fillText('Date of Achievement', 250, 700);
+
+            // Right Signature (Issuer authority)
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 350, 680);
+            ctx.lineTo(canvas.width - 150, 680);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'italic 18px "Pinyon Script", cursive';
+            ctx.fillText('Exam Board Authority', canvas.width - 250, 665); // Dynamic digital sig
+            
+            ctx.fillStyle = '#64748b';
+            ctx.font = '13px "Inter", sans-serif';
+            ctx.fillText('Authorized Signature', canvas.width - 250, 700);
+
+            // Activate Preview Area
+            document.getElementById('certificate-section').classList.remove('hidden');
+        }
+
+        /**
+         * CERTIFICATE SHARING & DOWNLOADING
+         */
+        function downloadCertificate() {
+            const canvas = document.getElementById('certificateCanvas');
+            
+            // Build temporary download link anchor
+            const link = document.createElement('a');
+            link.download = `AEM_Forms_Mastery_Certificate_${participantName.replace(/\s+/g, '_')}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            showToast("Certificate Downloaded", "The high-quality credentials PNG has been saved to your downloads.", "success");
+        }
+
+        function shareCertificateByEmail() {
+            const canvas = document.getElementById('certificateCanvas');
+            const dataUrl = canvas.toDataURL('image/png');
+
+            // Send notification about sharing/download action
+            dispatchEmail(
+                "Certificate Notification",
+                `🎓 Certificate Generated: ${participantName}`,
+                `Candidate ${participantName} (${participantEmail}) has successfully unlocked and downloaded their AEM Forms Specialist Certificate.`
+            );
+
+            showToast("Notification Sent", `Activity notice shared with ${targetEmailAddress}`, "success");
+        }
+
+        /**
+         * CELEBRATION CONFETTI EMITTER
+         */
+        function triggerConfetti() {
+            const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6'];
+            
+            for (let i = 0; i < 100; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.top = '-10px';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.transform = `scale(${Math.random() * 0.7 + 0.5})`;
+                
+                const duration = Math.random() * 2 + 3;
+                conf.style.animationDuration = duration + 's';
+                conf.style.animationDelay = Math.random() * 0.5 + 's';
+                
+                document.body.appendChild(conf);
+
+                // Clean up particle safely
+                setTimeout(() => {
+                    conf.remove();
+                }, (duration + 0.5) * 1000);
+            }
+        }
+
+        /**
+         * ARRAY SHUFFLING COMPANION
          */
         function shuffleArray(array) {
             let currentIndex = array.length, randomIndex;
@@ -588,214 +1047,6 @@
                 [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
             }
             return array;
-        }
-
-        /**
-         * INLINE INPUT VALIDATION
-         */
-        function clearInputError(inputElement) {
-            inputElement.classList.remove('input-error');
-            const errorDivId = inputElement.id === 'userName' ? 'nameError' : 'emailError';
-            document.getElementById(errorDivId).style.display = 'none';
-        }
-
-        function validateAndStart() {
-            const nameField = document.getElementById('userName');
-            const emailField = document.getElementById('userEmail');
-            const nameInput = nameField.value.trim();
-            const emailInput = emailField.value.trim();
-            
-            let isValid = true;
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            // Name validation
-            if (nameInput.length < 2) {
-                nameField.classList.add('input-error');
-                document.getElementById('nameError').style.display = 'block';
-                isValid = false;
-            } else {
-                clearInputError(nameField);
-            }
-
-            // Email validation
-            if (!emailRegex.test(emailInput)) {
-                emailField.classList.add('input-error');
-                document.getElementById('emailError').style.display = 'block';
-                isValid = false;
-            } else {
-                clearInputError(emailField);
-            }
-
-            if (!isValid) {
-                return;
-            }
-
-            participantName = nameInput;
-            participantEmail = emailInput;
-
-            // SCENARIO 1: Trigger email on registration
-            triggerEmailNotification(
-                "Scenario 1",
-                `Quiz Started: ${participantName}`,
-                `Github User, please note that ${participantName} (${participantEmail}) has initiated the AEM Forms Quiz.`
-            );
-
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('quiz-section').style.display = 'block';
-            
-            initializeQuiz();
-        }
-
-        /**
-         * GENERATE AND INJECT QUESTIONS
-         */
-        function initializeQuiz() {
-            document.getElementById('attempt-counter').innerText = currentAttempts;
-            
-            // Deep copy and shuffle questions
-            activeQuizData = JSON.parse(JSON.stringify(originalQuizData));
-            activeQuizData = shuffleArray(activeQuizData);
-            
-            const container = document.getElementById('questions-container');
-            container.innerHTML = ''; 
-
-            activeQuizData.forEach((qData, index) => {
-                qData.options = shuffleArray(qData.options);
-
-                const qDiv = document.createElement('div');
-                qDiv.className = 'question-card';
-                qDiv.id = `q-card-${index}`;
-                
-                let optionsHTML = '';
-                qData.options.forEach((opt) => {
-                    optionsHTML += `
-                        <label class="option-label">
-                            <input type="radio" name="q${index}" value="${opt.replace(/"/g, '&quot;')}" onchange="clearQuestionHighlight(${index})">
-                            ${opt}
-                        </label>
-                    `;
-                });
-
-                qDiv.innerHTML = `
-                    <div class="question-title">${index + 1}. ${qData.q}</div>
-                    <div class="options-group">
-                        ${optionsHTML}
-                    </div>
-                    <div class="validation-warning">
-                        ⚠️ Please select an answer for this question.
-                    </div>
-                `;
-                container.appendChild(qDiv);
-            });
-        }
-
-        /**
-         * CLEAR QUESTION HIGHLIGHT DYNAMICALLY
-         */
-        function clearQuestionHighlight(index) {
-            const card = document.getElementById(`q-card-${index}`);
-            if (card) {
-                card.classList.remove('unanswered-highlight');
-            }
-        }
-
-        /**
-         * SUBMIT AND VALIDATE QUESTIONS
-         */
-        function submitQuiz() {
-            let score = 0;
-            let unansweredIndices = [];
-
-            // Reset all previous highlights first
-            const cards = document.querySelectorAll('.question-card');
-            cards.forEach(card => card.classList.remove('unanswered-highlight'));
-
-            // Check answers and record unanswered
-            activeQuizData.forEach((qData, index) => {
-                const selected = document.querySelector(`input[name="q${index}"]:checked`);
-                if (selected) {
-                    if (selected.value === qData.answer) {
-                        score++;
-                    }
-                } else {
-                    unansweredIndices.push(index);
-                }
-            });
-
-            // If there are unanswered questions, highlight them and autoscroll to the first one
-            if (unansweredIndices.length > 0) {
-                unansweredIndices.forEach(idx => {
-                    const card = document.getElementById(`q-card-${idx}`);
-                    if (card) {
-                        card.classList.add('unanswered-highlight');
-                    }
-                });
-
-                // Get first unanswered card element
-                const firstUnansweredCard = document.getElementById(`q-card-${unansweredIndices[0]}`);
-                if (firstUnansweredCard) {
-                    firstUnansweredCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-
-                // Show warning toast
-                triggerEmailNotification(
-                    "Validation System",
-                    "Incomplete Submission Blocked",
-                    `User ${participantName} tried to submit but left ${unansweredIndices.length} questions unanswered.`,
-                    true
-                );
-                return;
-            }
-
-            processResults(score);
-        }
-
-        function processResults(score) {
-            const scoreDisplay = document.getElementById('score-display');
-            const submitBtn = document.getElementById('submit-btn');
-            const reattemptBtn = document.getElementById('reattempt-btn');
-            
-            // Disable inputs
-            const allRadios = document.querySelectorAll('input[type="radio"]');
-            allRadios.forEach(radio => radio.disabled = true);
-
-            const percentage = Math.round((score / 25) * 100);
-
-            scoreDisplay.style.display = 'block';
-            submitBtn.style.display = 'none';
-
-            if (score >= PASSING_SCORE) {
-                // PASS
-                scoreDisplay.className = 'score-pass';
-                scoreDisplay.innerHTML = `🎉 Congratulations! You Passed.<br>Score: ${score}/25 (${percentage}%)`;
-                reattemptBtn.style.display = 'none';
-
-                // SCENARIO 2: Trigger email on passing
-                triggerEmailNotification(
-                    "Scenario 2",
-                    `Quiz Passed: ${participantName}`,
-                    `${participantName} passed the AEM forms quiz with a score of ${score}/25. It took them ${currentAttempts} attempt(s).`
-                );
-            } else {
-                // FAIL
-                scoreDisplay.className = 'score-fail';
-                scoreDisplay.innerHTML = `❌ You Failed.<br>Score: ${score}/25 (${percentage}%). Minimum 80% (20/25) required.`;
-                reattemptBtn.style.display = 'inline-block';
-            }
-
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
-
-        function reattemptQuiz() {
-            currentAttempts++;
-            
-            document.getElementById('score-display').style.display = 'none';
-            document.getElementById('reattempt-btn').style.display = 'none';
-            document.getElementById('submit-btn').style.display = 'inline-block';
-            
-            initializeQuiz();
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>

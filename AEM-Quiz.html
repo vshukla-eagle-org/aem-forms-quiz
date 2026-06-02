@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEM Forms Practice Quiz (70% Passing)</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 700px; margin: 0 auto; padding: 20px; color: #333; background-color: #f9f9f9; }
+        .quiz-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { color: #d71920; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
+        .question { margin-bottom: 25px; background: #fafafa; padding: 15px; border-radius: 6px; border-left: 4px solid #0073ea; }
+        .question p { font-weight: bold; margin-top: 0; }
+        label { display: block; margin: 8px 0; cursor: pointer; transition: color 0.2s; }
+        label:hover { color: #0073ea; }
+        input[type="radio"] { margin-right: 10px; }
+        button { background: #0073ea; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 15px; }
+        button:hover { background: #0059b3; }
+        #result { margin-top: 25px; padding: 20px; border-radius: 6px; display: none; text-align: center; font-size: 18px; font-weight: bold; }
+        .pass { background-color: #e6f4ea; color: #137333; border: 1px solid #c2e7cb; }
+        .fail { background-color: #fce8e6; color: #c5221f; border: 1px solid #fad2cf; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>AEM Forms Overview Quiz</h1>
+    <p><strong>Passing Requirement: 70% (7/10 Correct)</strong></p>
+    <hr>
+    <form id="quizForm">
+        <!-- Q1 -->
+        <div class="question">
+            <p>1. What is the primary purpose of an Adaptive Form in AEM?</p>
+            <label><input type="radio" name="q1" value="A"> A) To create fixed, unalterable print layouts</label>
+            <label><input type="radio" name="q1" value="B"> B) To deliver dynamic, responsive, and personalized user experiences</label>
+            <label><input type="radio" name="q1" value="C"> C) To act as a static repository for digital assets</label>
+            <label><input type="radio" name="q1" value="D"> D) To execute hard-coded database queries</label>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question">
+            <p>2. Which tool manages the creation, assembly, and delivery of secure correspondences like business statements?</p>
+            <label><input type="radio" name="q2" value="A"> A) Interactive Communications / Print Channel Document</label>
+            <label><input type="radio" name="q2" value="B"> B) Multi-Site Manager</label>
+            <label><input type="radio" name="q2" value="C"> C) Core Component Layout Mode</label>
+            <label><input type="radio" name="q2" value="D"> D) Sites Web Editor</label>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question">
+            <p>3. How can you leverage a Form Data Model (FDM) inside automated corporate workflows?</p>
+            <label><input type="radio" name="q3" value="A"> A) FDM can only be used for offline PDF generation</label>
+            <label><input type="radio" name="q3" value="B"> B) FDM's service can be invoked directly as a step in an AEM Workflow</label>
+            <label><input type="radio" name="q3" value="C"> C) FDM automatically replaces the OSGi framework entirely</label>
+            <label><input type="radio" name="q3" value="D"> D) FDM requires manual code re-writes for every workflow trigger</label>
+        </div>
+
+        <!-- Q4 -->
+        <div class="question">
+            <p>4. Which three technologies provide a helpful foundation for developers to customize forms?</p>
+            <label><input type="radio" name="q4" value="A"> A) C++, Python, and Ruby</label>
+            <label><input type="radio" name="q4" value="B"> B) SQL, PHP, and Swift</label>
+            <label><input type="radio" name="q4" value="C"> C) HTML, CSS, and JavaScript</label>
+            <label><input type="radio" name="q4" value="D"> D) Java, Go, and Kotlin</label>
+        </div>
+
+        <!-- Q5 -->
+        <div class="question">
+            <p>5. When deploying AEM Forms on cloud infrastructure, the architecture is designed to be:</p>
+            <label><input type="radio" name="q5" value="A"> A) Managed strictly via local Windows server installers</label>
+            <label><input type="radio" name="q5" value="B"> B) Dependent on manual software upgrades every six months</label>
+            <label><input type="radio" name="q5" value="C"> C) Restricted only to desktop-rendered XFA forms</label>
+            <label><input type="radio" name="q5" value="D"> D) Always current, always available, and scale-ready without local hardware</label>
+        </div>
+
+        <!-- Q6 -->
+        <div class="question">
+            <p>6. What is a "Formset" in the context of business process automation within AEM Forms?</p>
+            <label><input type="radio" name="q6" value="A"> A) A grouping of multiple related forms that are filled and tracked together</label>
+            <label><input type="radio" name="q6" value="B"> B) A CSS theme applied universally to a web page</label>
+            <label><input type="radio" name="q6" value="C"> C) An internal database table configuration</label>
+            <label><input type="radio" name="q6" value="D"> D) A method used to compress dynamic PDF assets</label>
+        </div>
+
+        <!-- Q7 -->
+        <div class="question">
+            <p>7. Which capability allows non-technical authors to build complex data-capture forms rapidly?</p>
+            <label><input type="radio" name="q7" value="A"> A) Directly updating global.jsp source files</label>
+            <label><input type="radio" name="q7" value="B) Dragging and dropping Core Components from the side panel</label>
+            <label><input type="radio" name="q7" value="C"> C) Manually editing JCR node hierarchies via CRXDE</label>
+            <label><input type="radio" name="q7" value="D"> D) Running JQuery plugins via custom OSGi bundles</label>
+        </div>
+
+        <!-- Q8 -->
+        <div class="question">
+            <p>8. How does the "Document of Record" (DoR) serve an organization during form submission?</p>
+            <label><input type="radio" name="q8" value="A"> A) It acts as a browser-side cookie to track user sessions</label>
+            <label><input type="radio" name="q8" value="B"> B) It generates a static PDF representation of the submitted form for legal records</label>
+            <label><input type="radio" name="q8" value="C"> C) It automatically translates the form into alternative languages</label>
+            <label><input type="radio" name="q8" value="D"> D) It serves as a testing script for UI automation</label>
+        </div>
+
+        <!-- Q9 -->
+        <div class="question">
+            <p>9. Which built-in tool is used to implement visibility controls and field validation without deep coding?</p>
+            <label><input type="radio" name="q9" value="A"> A) AEM Dispatcher Configuration</label>
+            <label><input type="radio" name="q9" value="B"> B) Rule Editor</label>
+            <label><input type="radio" name="q9" value="C"> C) Sightly HTML Templates</label>
+            <label><input type="radio" name="q9" value="D"> D) FileVault Tool (VLT)</label>
+        </div>
+
+        <!-- Q10 -->
+        <div class="question">
+            <p>10. To safely distribute highly confidential customer statements via AEM Forms, you should utilize:</p>
+            <label><input type="radio" name="q10" value="A"> A) Public replication agents without encryption</label>
+            <label><input type="radio" name="q10" value="B"> B) Open-source JQuery components</label>
+            <label><input type="radio" name="q10" value="C"> C) Document Services API to encrypt PDFs with permission passwords</label>
+            <label><input type="radio" name="q10" value="D"> D) The local browser's default cache memory</label>
+        </div>
+
+        <button type="button" onclick="calculateScore()">Submit Quiz</button>
+    </form>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function calculateScore() {
+    const answers = { q1: "B", q2: "A", q3: "B", q4: "C", q5: "D", q6: "A", q7: "B", q8: "B", q9: "B", q10: "C" };
+    let score = 0;
+    const form = document.getElementById('quizForm');
+    
+    for (let key in answers) {
+        const selected = form.elements[key].value;
+        if (selected === answers[key]) {
+            score++;
+        }
+    }
+    
+    const percentage = (score / 10) * 100;
+    const resultDiv = document.getElementById('result');
+    resultDiv.style.display = "block";
+    
+    if (percentage >= 70) {
+        resultDiv.className = "pass";
+        resultDiv.innerHTML = `🎉 PASS! You scored ${score}/10 (${percentage}%). Excellent understanding of AEM Forms!`;
+    } else {
+        resultDiv.className = "fail";
+        resultDiv.innerHTML = `❌ FAIL. You scored ${score}/10 (${percentage}%). You need 70% to pass. Review the tutorials and try again!`;
+    }
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

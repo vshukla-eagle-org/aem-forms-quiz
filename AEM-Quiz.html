@@ -3,131 +3,800 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AEM Forms Technical Mastery Quiz</title>
-    <!-- Include EmailJS SDK for Scenarios 1 & 2 -->
-    <script src="https://jsdelivr.net"></script>
+    <title>AEM Forms Mastery Quiz</title>
     <style>
         :root {
-            --adobe-red: #FA0F00;
-            --charcoal: #2C2C2C;
-            --light-bg: #F8F9FA;
-            --border-color: #D3D3D3;
-            --success: #2E7D32;
-            --error: #C62828;
+            --primary: #1473e6;
+            --primary-hover: #0d66d0;
+            --success: #2e7d32;
+            --danger: #d32f2f;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e5e7eb;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--light-bg); color: var(--charcoal); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { background: #ffffff; width: 100%; max-width: 800px; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid var(--adobe-red); }
-        h1 { color: var(--adobe-red); margin-bottom: 10px; font-size: 24px; text-align: center; }
-        .description { font-size: 14px; color: #666; margin-bottom: 25px; text-align: center; line-height: 1.5; }
-        .hidden { display: none !important; }
-        
-        /* Form Styling */
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
-        input[type="text"], input[type="email"] { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 14px; transition: border 0.3s; }
-        input:focus { border-color: var(--adobe-red); outline: none; }
-        .error-msg { color: var(--error); font-size: 12px; margin-top: 5px; display: none; }
-        
-        /* Quiz Layout */
-        .q-card { background: #FFF; border: 1px solid var(--border-color); padding: 20px; border-radius: 6px; margin-bottom: 20px; }
-        .q-text { font-weight: 600; font-size: 16px; margin-bottom: 15px; }
-        .options-list { list-style: none; }
-        .option-item { display: flex; align-items: flex-start; margin-bottom: 10px; padding: 10px; border: 1px solid #EFEFEF; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
-        .option-item:hover { background: #F0F7FF; }
-        .option-item input { margin-right: 12px; margin-top: 3px; transform: scale(1.1); }
-        
-        /* Buttons */
-        .btn { background-color: var(--adobe-red); color: white; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; transition: background 0.2s; text-transform: uppercase; letter-spacing: 1px; }
-        .btn:hover { background-color: #D00B00; }
-        .btn-reattempt { background-color: #0066CC; }
-        .btn-reattempt:hover { background-color: #004C99; }
-        
-        /* Results view */
-        .results-panel { text-align: center; padding: 20px 0; }
-        .score-big { font-size: 48px; font-weight: bold; margin: 20px 0; }
-        .pass { color: var(--success); }
-        .fail { color: var(--error); }
-        .stats-box { background: #F0F4F8; padding: 15px; border-radius: 6px; margin-bottom: 25px; font-size: 15px; line-height: 1.6; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            margin-top: 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(20, 115, 230, 0.15);
+        }
+
+        input.input-error {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15) !important;
+        }
+
+        .error-feedback {
+            color: var(--danger);
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background-color: #b71c1c;
+        }
+
+        /* Quiz Styles */
+        #quiz-section {
+            display: none;
+        }
+
+        .question-card {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Unanswered Highlight Class */
+        .question-card.unanswered-highlight {
+            border: 2px solid var(--danger);
+            background-color: #fff5f5;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.1);
+        }
+
+        .validation-warning {
+            color: var(--danger);
+            font-weight: bold;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .question-card.unanswered-highlight .validation-warning {
+            display: flex;
+        }
+
+        .question-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .option-label:hover {
+            background: #eef2ff;
+        }
+
+        .option-label input {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        #quiz-footer {
+            margin-top: 30px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        #score-display {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .score-pass {
+            background-color: #e8f5e9;
+            color: var(--success);
+            border: 1px solid #c8e6c9;
+        }
+
+        .score-fail {
+            background-color: #ffebee;
+            color: var(--danger);
+            border: 1px solid #ffcdd2;
+        }
+
+        /* Toast Notification System */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: #2d3748;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 14px;
+            border-left: 5px solid var(--primary);
+            animation: slideIn 0.3s ease-out forwards;
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        .toast.toast-warning {
+            border-left-color: var(--danger);
+        }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>AEM Forms Technical Mastery Evaluation</h1>
-    <p class="description">Based on Adobe Experience Manager 6.4/6.5 Forms Framework tutorials. Requires an 80% score (20/25 correct answers) to pass.</p>
+    <div id="toast-container"></div>
 
-    <!-- STEP 1: Registration Window -->
-    <div id="auth-section">
-        <div class="form-group">
-            <label for="username">Full Name</label>
-            <input type="text" id="username" placeholder="Enter your full name">
-            <div class="error-msg" id="err-name">Name must be at least 2 characters long.</div>
+    <div class="container">
+        <div class="header">
+            <h1>AEM Forms Mastery Quiz</h1>
+            <p>Test your knowledge of Adobe Experience Manager Forms.</p>
         </div>
-        <div class="form-group">
-            <label for="useremail">Email Address</label>
-            <input type="email" id="useremail" placeholder="name@company.com">
-            <div class="error-msg" id="err-email">Please enter a valid email address.</div>
+
+        <!-- Login Section -->
+        <div id="login-section">
+            <h3>Enter your details to begin</h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Passing mark is 80% (20 out of 25 questions).</p>
+            
+            <div class="form-group">
+                <label for="userName">Full Name</label>
+                <input type="text" id="userName" placeholder="John Doe" oninput="clearInputError(this)">
+                <div class="error-feedback" id="nameError">Please enter a valid name (at least 2 characters).</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="userEmail">Email Address</label>
+                <input type="email" id="userEmail" placeholder="john@example.com" oninput="clearInputError(this)">
+                <div class="error-feedback" id="emailError">Please enter a valid email address (e.g., name@domain.com).</div>
+            </div>
+            
+            <button class="btn" onclick="validateAndStart()">Start Quiz</button>
         </div>
-        <button type="button" class="btn" onclick="validateAndStart()">Validate & Start Quiz</button>
+
+        <!-- Quiz Section -->
+        <div id="quiz-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0;">Attempt: <span id="attempt-counter">1</span></h3>
+                <span style="font-weight: bold; color: var(--primary);">25 Questions</span>
+            </div>
+            
+            <div id="questions-container">
+                <!-- Questions will be dynamically injected here -->
+            </div>
+
+            <div id="quiz-footer">
+                <div id="score-display"></div>
+                <button id="submit-btn" class="btn" onclick="submitQuiz()">Submit Quiz</button>
+                <button id="reattempt-btn" class="btn btn-danger" style="display: none;" onclick="reattemptQuiz()">Reattempt Quiz</button>
+            </div>
+        </div>
     </div>
-
-    <!-- STEP 2: Main Quiz Interface -->
-    <div id="quiz-section" class="hidden">
-        <div id="questions-container"></div>
-        <button type="button" id="action-btn" class="btn" onclick="evaluateQuiz()">Submit Examination</button>
-    </div>
-
-    <!-- STEP 3: Outcome Display -->
-    <div id="result-section" class="hidden" class="results-panel">
-        <h2 id="result-status">Evaluation Complete</h2>
-        <div id="score-display" class="score-big">0%</div>
-        <div class="stats-box" id="stats-summary"></div>
-        <div id="result-action-placeholder"></div>
-    </div>
-</div>
-
-<script>
-    // --- EMAILJS CONFIGURATION ---
-    // Sign up on emailjs.com to link your GitHub profile email target.
-    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; 
-    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
-
-    // Initialize EmailJS
-    (function() {
-        if(EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-            emailjs.init(EMAILJS_PUBLIC_KEY);
-        }
-    })();
-
-    // --- APPLICATION VARIABLES ---
-    let userData = { name: '', email: '' };
-    let attemptsCount = 0;
-    const passingThreshold = 80;
-    const totalQuestionsRequested = 25;
-
-    // --- COMPREHENSIVE AEM FORMS QUESTION DATABANK (25 Unique Items) ---
-    const rawQuestionBank = [
-        { q: "Which framework component creates responsive, personalized, dynamic digital form experiences?", o: ["Adaptive Forms", "Static PDF Forms", "HTML Workspaces", "Print Channel Profiles"], a: 0 },
-        { q: "What tool maps dissimilar backend schemas together into a unified model for an Adaptive Form workflow?", o: ["Form Data Model (FDM)", "Sling Repository Merger", "Workflow Process Archive", "AEM Translation Manager"], a: 0 },
-        { q: "Which tool centralizes, builds, and securely outputs personalized corporate correspondence and statements?", o: ["Interactive Communications", "AEM Sites Portal", "DAM Asset Distribution", "Adaptive Layout Container"], a: 0 },
-        { q: "How can you invoke a Form Data Model Service step programmatically inside AEM system architecture?", o: ["Add it as a process step within an AEM Workflow", "Invoke via client-side CSS Framework injection", "Trigger manually using crxde lite directly", "Write static HTML forms code natively"], a: 0 },
-        { q: "Which versions of Adobe Experience Manager natively apply to the learning pathways outlined in the core guide?", o: ["AEM 6.4 and 6.5", "AEM 6.0 only", "AEM 5.6 Legacy editions", "CQ 4.5 Platforms only"], a: 0 },
-        { q: "What primary persona is specifically targeted in the execution of technical data model configurations?", o: ["Developer", "Content Editor", "Business Marketing Analyst", "UX Layout Designer"], a: 0 },
-        { q: "In an AEM Forms OSGi Workflow context, what can be used as a dynamic variable data layer?", o: ["Form Data Model instances", "Static properties documents", "Client-side localized cache cookies", "CSS Style Sheet Variables"], a: 0 },
-        { q: "What functional module allows field agents to complete forms and sync data back to an core server offline?", o: ["AEM Forms App", "Universal Editor UI", "Dispatcher Proxy Layer", "Sling Engine Servlet"], a: 0 },
-        { q: "Which tool layout is used natively to create interactive, dynamic print channel templates?", o: ["Forms Designer / Workbench", "AEM Screens UI", "Sites Page Context Editor", "Experience Fragments builder"], a: 0 },
-        { q: "What is the out-of-the-box configuration system path used to connect an AEM stack with a MySQL pool?", o: ["Apache Sling Connection Pooled Datasource", "Day CQ Mail Service config", "Adobe Sign API cloud model", "Link Externalizer service config"], a: 0 },
-        { q: "To display custom data properties seamlessly inside an Adaptive Form context, what system rule configuration is utilized?", o: ["Rule Editor Scripting / Rule Engine", "Sling Rewrite pipelines", "ClientLibs inclusion injection", "Authoring Metadata Schema properties"], a: 0 },
-        { q: "Which submit action directly forwards user payload packages safely to a database model configuration?", o: ["Submit using Form Data Model", "Store in localized CQ Page Repository", "Forward to internal system Author logs", "Clear client session parameters cache"], a: 0 },
-        { q: "What feature automatically produces an archival, static visual copy of a completed Adaptive Form instance?", o: ["Document of Record (DoR)", "Interactive Communication Web channel", "JSON Schema Definition asset", "Workflow Payload Folder hierarchy"], a: 0 },
-        { q: "Which service configuration handles administrative out-of-office message distributions and automatic notifications?", o: ["Day CQ Mail Service", "Apache Sling Logging Logger", "FDM Prefill Engine instance", "AEM Forms App Workspace configuration"], a: 0 },
-        { q: "To expose enterprise cloud platforms like Microsoft SharePoint to AEM Forms, you configure a:", o: ["Cloud Service Configuration", "OSGi Environment System Property File", "Dispatcher Cache Rewriting Logic rule", "ClientLib folder package configuration"], a: 0 },
-        { q: "What layer caches structural code fragments but requires explicit configurations to pass AEM Form parameters?", o: ["AEM Dispatcher Instance", "CRX OAK Repository Core", "Jetty Application Servlet Engine", "AEM Form Container Layout Context"], a: 0 },
-        { q: "What configuration properties can prefill and instantiate form field information seamlessly for users?", o: ["Form Data Model Prefill Service", "Metadata Tagging profiles Manager", "Custom ClientLib JavaScript functions", "Apache Sling Model context annotations"], a: 0 },
-        { q: "Which editor tool interface handles layout styling variables like color themes and typography globally?", o: ["Theme Editor Panel", "CRXDE Lite System Directory", "Workflow Models Creation Manager", "Form Data Model graphical workspace UI"], a: 0 },{ q: "What core user group membership allows administrative privileges to construct and manipulate Workflow Models?", o: ["workflow-editor", "forms-users", "everyone", "anonymous-access-group"], a: 0 },{ q: "How are external third-party digital signers bound to automated workspace approval pathways?", o: ["Acrobat Sign Cloud Integration step", "Basic HTML form field checks", "Local system keychain configurations", "Apache Sling Authentication Filter tweaks"], a: 0 },{ q: "What file extension is used to construct structural form templates inside Adobe Forms Designer?", o: [".XDP format file", ".HTML text source", ".CSS configuration sheet", ".JAR framework archive file"], a: 0 },{ q: "To map data points smoothly into an Adaptive Form component without structural schema coding, you configure a:", o: ["Bind Reference Property", "Sling Selector query pattern", "CQ Include path string", "ClientLib category array reference"], a: 0 },{ q: "What configuration validates that user-submitted dataset entries conform strictly to transactional rules?", o: ["Form Data Model Validation Levels", "CSS styling presentation conditions", "Dispatcher caching farm rule lists", "Authoring page tagging structures"], a: 0 },{ q: "What directory folder pattern maps custom localized form modules to the external cloud infrastructure web channel?", o: ["/content/forms/af/", "/apps/system/config/", "/etc/clientlibs/global/", "/var/audit/workflow/"], a: 0 },{ q: "Which tool enables rapid document authoring for business profiles using Microsoft Excel or Google Sheets?", o: ["Edge Delivery Services for AEM Forms", "AEM Forms Workbench core app", "Traditional OSGi Foundation containers", "Classic Forms Workspace interface portal"], a: 0 }];
 
     <script>
-// --- SCENARIO 1: Notification Pipeline ---function sendNotificationEmail(type, currentScore = 0) {if(EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY") {console.log([EmailJS Simulation] Email dispatched to GitHub owner profile. Type: ${type}. User: ${userData.email}. Attempts: ${attemptsCount}. Score: ${currentScore}%);return;}let templateParams = {notification_type: type,user_name: userData.name,user_email: userData.email,attempts_taken: attemptsCount,quiz_score: currentScore + "%",timestamp: new Date().toISOString()};emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams).then(function(response) {console.log('Notification email transferred successfully.', response.status, response.text);}, function(error) {console.error('Email pipeline execution fault:', error);});}// --- FORM ENTRY COMPONENT VALIDATION ---function validateAndStart() {const nameInput = document.getElementById('username').value.trim();const emailInput = document.getElementById('useremail').value.trim();let isValid = true;if (nameInput.length < 2) {document.getElementById('err-name').style.display = 'block';isValid = false;} else {document.getElementById('err-name').style.display = 'none';}const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;if (!emailRegex.test(emailInput)) {document.getElementById('err-email').style.display = 'block';isValid = false;} else {document.getElementById('err-email').style.display = 'none';}if (isValid) {userData.name = nameInput;userData.email = emailInput;// Hide registration window, reveal quiz windowdocument.getElementById('auth-section').classList.add('hidden');document.getElementById('quiz-section').classList.remove('hidden');// Scenario 1: Trigger notification mail immediately upon user validation entry passesattemptsCount++;sendNotificationEmail("Initial Registration & Start Attempt");loadQuizState();}}// --- RANDOMIZATION & RENDER SYSTEM ---let ActiveQuestionsList = [];function loadQuizState() {// Create shallow clone copy and shuffle the array content randomlyActiveQuestionsList = [...rawQuestionBank].sort(() => Math.random() - 0.5);const container = document.getElementById('questions-container');container.innerHTML = '';ActiveQuestionsList.forEach((item, index) => {const card = document.createElement('div');card.className = 'q-card';const qTitle = document.createElement('div');qTitle.className = 'q-text';qTitle.innerText = ${index + 1}. ${item.q};card.appendChild(qTitle);const optionsUl = document.createElement('ul');optionsUl.className = 'options-list';item.o.forEach((optionText, optionIdx) => {const li = document.createElement('li');li.className = 'option-item';// Wrap inner structure to allow click triggers effortlesslyli.innerHTML = <label style="display:flex; width:100%; cursor:pointer; font-weight:normal;"> <input type="radio" name="question_${index}" value="${optionIdx}"> <span>${optionText}</span> </label>;optionsUl.appendChild(li);});card.appendChild(optionsUl);container.appendChild(card);});window.scrollTo(0, 0);}// --- SCORING & SCENARIO 2 EXECUTION ENGINE ---function evaluateQuiz() {let correctCount = 0;ActiveQuestionsList.forEach((item, index) => {const selectedInput = document.querySelector(input[name="question_${index}"]:checked);if (selectedInput && parseInt(selectedInput.value) === item.a) {correctCount++;}});const finalCalculatedScore = Math.round((correctCount / totalQuestionsRequested) * 100);const hasPassed = finalCalculatedScore >= passingThreshold;// Transitions views safely inside single page scopedocument.getElementById('quiz-section').classList.add('hidden');const resultsView = document.getElementById('result-section');resultsView.classList.remove('hidden');const scoreElement = document.getElementById('score-display');const statusElement = document.getElementById('result-status');const statsSummary = document.getElementById('stats-summary');const actionPlaceholder = document.getElementById('result-action-placeholder');scoreElement.innerText = ${finalCalculatedScore}%;statsSummary.innerHTML = <strong>Candidate Profile:</strong> ${userData.name} (${userData.email})<br> <strong>Total Attempts Tracked:</strong> ${attemptsCount}<br> <strong>Correct Answers:</strong> ${correctCount} out of ${totalQuestionsRequested} Questions;if (hasPassed) {statusElement.innerText = "Congratulations! Examination Passed";statusElement.className = "pass";scoreElement.className = "score-big pass";actionPlaceholder.innerHTML = <p style="color:var(--success); font-weight:bold;">Certification criteria met perfectly. Your test logs have been routed.</p>;// Scenario 2: User passed the quiz -> notify the github owner profile with attempt metricsendNotificationEmail("Quiz Passed Successfully", finalCalculatedScore);} else {statusElement.innerText = "Examination Criteria Unmet";statusElement.className = "fail";scoreElement.className = "score-big fail";// Append a responsive, randomized re-attempt call action instead of submission triggersactionPlaceholder.innerHTML = <button type="button" class="btn btn-reattempt" onclick="triggerReattempt()">Reattempt Evaluation</button>;// Update tracking for future pipelines, notify database logs if needed via code modification hookssendNotificationEmail("Attempt Failure Logged", finalCalculatedScore);}}function triggerReattempt() {attemptsCount++;// Toggle frames back cleanlydocument.getElementById('result-section').classList.add('hidden');document.getElementById('quiz-section').classList.remove('hidden');// Reload fresh quiz content using updated, alternative randomization matrix setsloadQuizState();}
-</script>
+        /** * CONFIGURATION 
+         */
+        const GITHUB_USER_EMAIL = "vshukla@eagle.org"; // "github.user@example.com"; Set your target notification email here
+        const PASSING_SCORE = 20; // 80% of 25
+
+        /**
+         * STATE VARIABLES
+         */
+        let currentAttempts = 1;
+        let participantName = "";
+        let participantEmail = "";
+        let activeQuizData = [];
+
+        /**
+         * QUIZ DATA (Based on AEM Forms Overview Documentation)
+         */
+        const originalQuizData = [
+            {
+                q: "What is the primary purpose of Adobe Experience Manager (AEM) Forms?",
+                options: [
+                    "To create, manage, publish, and update complex digital forms",
+                    "To edit high-resolution images for websites",
+                    "To strictly host SQL databases for customer profiles",
+                    "To edit and render video streams"
+                ],
+                answer: "To create, manage, publish, and update complex digital forms"
+            },
+            {
+                q: "Which type of forms are described as 'new-generation forms that are dynamic and responsive'?",
+                options: [
+                    "Adaptive Forms",
+                    "Static HTML Forms",
+                    "Print-only Forms",
+                    "Legacy Flash Forms"
+                ],
+                answer: "Adaptive Forms"
+            },
+            {
+                q: "What feature centralizes and manages the creation of secure, personalized correspondences like statements and bills?",
+                options: [
+                    "Interactive Communications",
+                    "AEM Sites",
+                    "Workflow Assign Task",
+                    "Captcha Module"
+                ],
+                answer: "Interactive Communications"
+            },
+            {
+                q: "Which functionality allows you to map adaptive form fields to external databases or REST services?",
+                options: [
+                    "Form Data Model",
+                    "Document Security",
+                    "Watched Folders",
+                    "Rule Editor"
+                ],
+                answer: "Form Data Model"
+            },
+            {
+                q: "Which desktop application is used to author traditional PDF and HTML5 form templates?",
+                options: [
+                    "AEM Forms Designer",
+                    "Adobe Photoshop",
+                    "AEM Site Builder",
+                    "Forms Web Editor"
+                ],
+                answer: "AEM Forms Designer"
+            },
+            {
+                q: "What is a Document of Record (DoR) in the context of AEM Forms?",
+                options: [
+                    "A flattened, print-friendly PDF version of an Adaptive Form generated upon submission",
+                    "An audio recording of the user filling out the form",
+                    "The server-side database where form analytics are kept",
+                    "A backup file of the AEM installation"
+                ],
+                answer: "A flattened, print-friendly PDF version of an Adaptive Form generated upon submission"
+            },
+            {
+                q: "Which feature allows users to save a partially filled form and return to it later?",
+                options: [
+                    "Save and Retrieve (Drafts)",
+                    "Data Wipe Service",
+                    "Automated Form Converter",
+                    "Session Timeout Service"
+                ],
+                answer: "Save and Retrieve (Drafts)"
+            },
+            {
+                q: "What mechanism automates document processing by monitoring a specific directory for incoming files?",
+                options: [
+                    "Watched Folders",
+                    "Sling Servlets",
+                    "OSGi Bundles",
+                    "AEM Assets Service"
+                ],
+                answer: "Watched Folders"
+            },
+            {
+                q: "Which service is used to assemble, disassemble, and manipulate PDF documents (e.g., merging multiple PDFs)?",
+                options: [
+                    "Assembler Service",
+                    "Output Service",
+                    "PDFG Service",
+                    "Barcode Service"
+                ],
+                answer: "Assembler Service"
+            },
+            {
+                q: "What is the primary purpose of the Acrobat Sign integration in AEM Forms?",
+                options: [
+                    "To enable secure and legal electronic signatures on digital forms",
+                    "To generate mathematical graphs based on input",
+                    "To compress PDF files for faster loading",
+                    "To translate forms into multiple languages automatically"
+                ],
+                answer: "To enable secure and legal electronic signatures on digital forms"
+            },
+            {
+                q: "Which feature allows developers to create reusable sets of fields, such as an address block, for multiple forms?",
+                options: [
+                    "Adaptive Form Fragments",
+                    "Form Snippets",
+                    "XDP Macros",
+                    "Document Modules"
+                ],
+                answer: "Adaptive Form Fragments"
+            },
+            {
+                q: "How are complex business rules and validations typically added to Adaptive Forms without writing custom backend code?",
+                options: [
+                    "Using the Rule Editor",
+                    "Writing Java Servlets",
+                    "Configuring the OSGi Console",
+                    "Modifying the CRXDE Lite root"
+                ],
+                answer: "Using the Rule Editor"
+            },
+            {
+                q: "Which service allows you to apply usage rights or passwords to restrict printing or editing of a PDF?",
+                options: [
+                    "Document Security",
+                    "PDFG Service",
+                    "Forms Service",
+                    "Assembler Service"
+                ],
+                answer: "Document Security"
+            },
+            {
+                q: "What workflow component is commonly used to route a submitted form to a human reviewer for approval?",
+                options: [
+                    "Assign Task step",
+                    "Extract Node step",
+                    "Generate Document step",
+                    "Send Email step"
+                ],
+                answer: "Assign Task step"
+            },
+            {
+                q: "What is the Automated Forms Conversion Service used for?",
+                options: [
+                    "Converting legacy PDF forms into modern, responsive Adaptive Forms",
+                    "Translating English forms to Spanish",
+                    "Converting JSON data into XML data",
+                    "Changing AEM Sites pages into AEM Forms"
+                ],
+                answer: "Converting legacy PDF forms into modern, responsive Adaptive Forms"
+            },
+            {
+                q: "Which integration feature enables reading data from scanned identity documents and automatically filling it into a form?",
+                options: [
+                    "OCR Data Extraction",
+                    "Barcode Service",
+                    "Form Data Model",
+                    "Acrobat Sign"
+                ],
+                answer: "OCR Data Extraction"
+            },
+            {
+                q: "What does the Barcode Service in AEM Forms do?",
+                options: [
+                    "Generates a barcode image based on form data for scanning",
+                    "Scans physical barcodes through the user's webcam",
+                    "Encrypts the entire form into a QR code for security",
+                    "Automatically buys products based on scanned barcodes"
+                ],
+                answer: "Generates a barcode image based on form data for scanning"
+            },
+            {
+                q: "Which component architecture is the modern, recommended approach for building AEM pages and forms?",
+                options: [
+                    "Core Components",
+                    "Foundation Components",
+                    "Classic UI Components",
+                    "Legacy Flash Components"
+                ],
+                answer: "Core Components"
+            },
+            {
+                q: "What service would you configure to populate an Adaptive Form with existing data before the user sees it?",
+                options: [
+                    "Prefill Service",
+                    "Draft Service",
+                    "Output Service",
+                    "Review Service"
+                ],
+                answer: "Prefill Service"
+            },
+            {
+                q: "How can you create automated UI tests specifically tailored for Adaptive Forms?",
+                options: [
+                    "Using the Automated Testing for Adaptive Forms framework",
+                    "Only by writing manual Selenium scripts",
+                    "Using the AEM Sites testing toolkit",
+                    "Adaptive Forms cannot be automatically tested"
+                ],
+                answer: "Using the Automated Testing for Adaptive Forms framework"
+            },
+            {
+                q: "Which file format serves as the XML-based template design file created in AEM Forms Designer?",
+                options: [
+                    "XDP (XML Data Package)",
+                    "PDF",
+                    "DOCX",
+                    "HTML"
+                ],
+                answer: "XDP (XML Data Package)"
+            },
+            {
+                q: "In AEM Workflow, what step allows you to retrieve a specific piece of data from a submitted form's XML payload?",
+                options: [
+                    "Extract node from XML document",
+                    "Save document to file system",
+                    "Sign Multiple Forms",
+                    "Log workflow variables"
+                ],
+                answer: "Extract node from XML document"
+            },
+            {
+                q: "Which feature allows you to embed third-party services to prevent automated bot submissions?",
+                options: [
+                    "Captcha in Adaptive Forms",
+                    "Document Security permissions",
+                    "Two Factor Authentication",
+                    "Form Data Model constraints"
+                ],
+                answer: "Captcha in Adaptive Forms"
+            },
+            {
+                q: "What is the PDFG (PDF Generator) service primarily used for?",
+                options: [
+                    "Converting native file formats (like Word or HTML) into PDF documents",
+                    "Generating Adaptive Forms from PDFs",
+                    "Generating barcodes on PDFs",
+                    "Merging multiple PDFs into one"
+                ],
+                answer: "Converting native file formats (like Word or HTML) into PDF documents"
+            },
+            {
+                q: "When handling form submissions to an external API endpoint, what standard configuration is used?",
+                options: [
+                    "A Custom Submit Action or Form Data Model submit",
+                    "The Barcode Service",
+                    "An OSGi configuration for local storage only",
+                    "The Assign Task workflow step"
+                ],
+                answer: "A Custom Submit Action or Form Data Model submit"
+            }
+        ];
+
+        /**
+         * NOTIFICATION / EMAIL MOCK SYSTEM
+         */
+        function triggerEmailNotification(scenarioName, subject, message, isWarning = false) {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${isWarning ? 'toast-warning' : ''}`;
+            toast.innerHTML = `<strong>📧 Email Triggered (${scenarioName})</strong><br>To: ${GITHUB_USER_EMAIL}<br>Subject: ${subject}`;
+            
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+
+            console.log(`=== EMAIL NOTIFICATION TRIGGERED ===`);
+            console.log(`TO: ${GITHUB_USER_EMAIL}`);
+            console.log(`SUBJECT: ${subject}`);
+            console.log(`BODY: ${message}`);
+            console.log(`====================================`);
+        }
+
+        /**
+         * UTILITY FUNCTIONS
+         */
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        /**
+         * INLINE INPUT VALIDATION
+         */
+        function clearInputError(inputElement) {
+            inputElement.classList.remove('input-error');
+            const errorDivId = inputElement.id === 'userName' ? 'nameError' : 'emailError';
+            document.getElementById(errorDivId).style.display = 'none';
+        }
+
+        function validateAndStart() {
+            const nameField = document.getElementById('userName');
+            const emailField = document.getElementById('userEmail');
+            const nameInput = nameField.value.trim();
+            const emailInput = emailField.value.trim();
+            
+            let isValid = true;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Name validation
+            if (nameInput.length < 2) {
+                nameField.classList.add('input-error');
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            } else {
+                clearInputError(nameField);
+            }
+
+            // Email validation
+            if (!emailRegex.test(emailInput)) {
+                emailField.classList.add('input-error');
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            } else {
+                clearInputError(emailField);
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            participantName = nameInput;
+            participantEmail = emailInput;
+
+            // SCENARIO 1: Trigger email on registration
+            triggerEmailNotification(
+                "Scenario 1",
+                `Quiz Started: ${participantName}`,
+                `Github User, please note that ${participantName} (${participantEmail}) has initiated the AEM Forms Quiz.`
+            );
+
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('quiz-section').style.display = 'block';
+            
+            initializeQuiz();
+        }
+
+        /**
+         * GENERATE AND INJECT QUESTIONS
+         */
+        function initializeQuiz() {
+            document.getElementById('attempt-counter').innerText = currentAttempts;
+            
+            // Deep copy and shuffle questions
+            activeQuizData = JSON.parse(JSON.stringify(originalQuizData));
+            activeQuizData = shuffleArray(activeQuizData);
+            
+            const container = document.getElementById('questions-container');
+            container.innerHTML = ''; 
+
+            activeQuizData.forEach((qData, index) => {
+                qData.options = shuffleArray(qData.options);
+
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question-card';
+                qDiv.id = `q-card-${index}`;
+                
+                let optionsHTML = '';
+                qData.options.forEach((opt) => {
+                    optionsHTML += `
+                        <label class="option-label">
+                            <input type="radio" name="q${index}" value="${opt.replace(/"/g, '&quot;')}" onchange="clearQuestionHighlight(${index})">
+                            ${opt}
+                        </label>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <div class="question-title">${index + 1}. ${qData.q}</div>
+                    <div class="options-group">
+                        ${optionsHTML}
+                    </div>
+                    <div class="validation-warning">
+                        ⚠️ Please select an answer for this question.
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+        }
+
+        /**
+         * CLEAR QUESTION HIGHLIGHT DYNAMICALLY
+         */
+        function clearQuestionHighlight(index) {
+            const card = document.getElementById(`q-card-${index}`);
+            if (card) {
+                card.classList.remove('unanswered-highlight');
+            }
+        }
+
+        /**
+         * SUBMIT AND VALIDATE QUESTIONS
+         */
+        function submitQuiz() {
+            let score = 0;
+            let unansweredIndices = [];
+
+            // Reset all previous highlights first
+            const cards = document.querySelectorAll('.question-card');
+            cards.forEach(card => card.classList.remove('unanswered-highlight'));
+
+            // Check answers and record unanswered
+            activeQuizData.forEach((qData, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected) {
+                    if (selected.value === qData.answer) {
+                        score++;
+                    }
+                } else {
+                    unansweredIndices.push(index);
+                }
+            });
+
+            // If there are unanswered questions, highlight them and autoscroll to the first one
+            if (unansweredIndices.length > 0) {
+                unansweredIndices.forEach(idx => {
+                    const card = document.getElementById(`q-card-${idx}`);
+                    if (card) {
+                        card.classList.add('unanswered-highlight');
+                    }
+                });
+
+                // Get first unanswered card element
+                const firstUnansweredCard = document.getElementById(`q-card-${unansweredIndices[0]}`);
+                if (firstUnansweredCard) {
+                    firstUnansweredCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+
+                // Show warning toast
+                triggerEmailNotification(
+                    "Validation System",
+                    "Incomplete Submission Blocked",
+                    `User ${participantName} tried to submit but left ${unansweredIndices.length} questions unanswered.`,
+                    true
+                );
+                return;
+            }
+
+            processResults(score);
+        }
+
+        function processResults(score) {
+            const scoreDisplay = document.getElementById('score-display');
+            const submitBtn = document.getElementById('submit-btn');
+            const reattemptBtn = document.getElementById('reattempt-btn');
+            
+            // Disable inputs
+            const allRadios = document.querySelectorAll('input[type="radio"]');
+            allRadios.forEach(radio => radio.disabled = true);
+
+            const percentage = Math.round((score / 25) * 100);
+
+            scoreDisplay.style.display = 'block';
+            submitBtn.style.display = 'none';
+
+            if (score >= PASSING_SCORE) {
+                // PASS
+                scoreDisplay.className = 'score-pass';
+                scoreDisplay.innerHTML = `🎉 Congratulations! You Passed.<br>Score: ${score}/25 (${percentage}%)`;
+                reattemptBtn.style.display = 'none';
+
+                // SCENARIO 2: Trigger email on passing
+                triggerEmailNotification(
+                    "Scenario 2",
+                    `Quiz Passed: ${participantName}`,
+                    `${participantName} passed the AEM forms quiz with a score of ${score}/25. It took them ${currentAttempts} attempt(s).`
+                );
+            } else {
+                // FAIL
+                scoreDisplay.className = 'score-fail';
+                scoreDisplay.innerHTML = `❌ You Failed.<br>Score: ${score}/25 (${percentage}%). Minimum 80% (20/25) required.`;
+                reattemptBtn.style.display = 'inline-block';
+            }
+
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function reattemptQuiz() {
+            currentAttempts++;
+            
+            document.getElementById('score-display').style.display = 'none';
+            document.getElementById('reattempt-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'inline-block';
+            
+            initializeQuiz();
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
